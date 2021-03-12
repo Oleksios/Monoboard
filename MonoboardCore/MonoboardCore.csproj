@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFramework>net5.0-windows</TargetFramework>
+	<BeautyLibsDir>libraries</BeautyLibsDir>
+	<DisableBeauty>False</DisableBeauty>
+	<UseWPF>true</UseWPF>
+	<NoBeautyFlag>False</NoBeautyFlag>
+	<ForceBeauty>False</ForceBeauty>
+	<Nullable>enable</Nullable>
+	<DisablePatch>False</DisablePatch>
+	<BeautyLogLevel>Error</BeautyLogLevel>
+	<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+	<SignAssembly>False</SignAssembly>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	<Optimize>False</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	<Optimize>True</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.3" />
+	<PackageReference Include="nulastudio.NetCoreBeauty" Version="1.2.9.2" />
+	<PackageReference Include="RestEase" Version="1.5.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<Reference Include="System.Windows.Presentation">
+	  <HintPath>C:\Program Files\dotnet\packs\Microsoft.WindowsDesktop.App.Ref\5.0.0\ref\net5.0\System.Windows.Presentation.dll</HintPath>
+	</Reference>
+  </ItemGroup>
+
+</Project>

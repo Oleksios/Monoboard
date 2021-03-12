@@ -1,0 +1,744 @@
+﻿<Application
+	x:Class="Monoboard.App"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:webview2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+	xmlns:statementItemsViewModels="clr-namespace:Monoboard.ViewModel.StatementItemsViewModels"
+	xmlns:validation="clr-namespace:Monoboard.Helpers.Validation"
+	StartupUri="View/MainWindow.xaml">
+	<Application.Resources>
+		<ResourceDictionary>
+
+			<FontFamily x:Key="WhiteRabbit">pack://application:,,,/Fonts/WhiteRabbit/#White Rabbit</FontFamily>
+
+			<webview2:CoreWebView2CreationProperties x:Key="EvergreenWebView2CreationProperties" />
+
+			<ResourceDictionary.MergedDictionaries>
+				<!-- Localization -->
+				<ResourceDictionary Source="/Resources/Localization/lang.xaml" />
+				<ResourceDictionary Source="/Resources/Localization/Currency/CurrencyTag.xaml" />
+				<ResourceDictionary Source="/Resources/Localization/Currency/CurrencyResources.xaml" />
+
+				<!-- material design styles -->
+				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/Generic.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/Generic.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/MaterialDesignLightTheme.xaml" />
+
+				<!-- Monoboard colors -->
+				<ResourceDictionary>
+					<ResourceDictionary.MergedDictionaries>
+						<ResourceDictionary Source="Resources/Styles/MonoboardColor.xaml" />
+					</ResourceDictionary.MergedDictionaries>
+					<SolidColorBrush x:Key="PrimaryHueLightBrush" Color="{StaticResource PrimaryLightColor}" />
+					<SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="{StaticResource PrimaryLightColorForeground}" />
+
+					<SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource PrimaryColor}" />
+					<SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="{StaticResource PrimaryColorForeground}" />
+
+					<SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="{StaticResource PrimaryDarkColor}" />
+					<SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="{StaticResource PrimaryDarkColorForeground}" />
+
+					<SolidColorBrush x:Key="SecondaryHueMidBrush" Color="{StaticResource SecondaryColor}" />
+					<SolidColorBrush x:Key="SecondaryHueMidForegroundBrush" Color="{StaticResource SecondaryColorForeground}" />
+
+					<SolidColorBrush x:Key="ProhibitoryHueBrush" Color="{StaticResource ProhibitoryColor}" />
+					<SolidColorBrush x:Key="ProhibitoryHueForegroundBrush" Color="{StaticResource ProhibitoryColorForeground}" />
+
+					<SolidColorBrush x:Key="AllowingHueBrush" Color="{StaticResource AllowingColor}" />
+					<SolidColorBrush x:Key="AllowingHueForegroundBrush" Color="{StaticResource AllowingColorForeground}" />
+
+					<!-- For auth button (Example)-->
+					<SolidColorBrush x:Key="WhiteButtonBrush" Color="{StaticResource WhiteColor}" />
+
+				</ResourceDictionary>
+
+				<ResourceDictionary Source="Resources/Styles/CustomStyles.xaml" />
+
+				<!-- StatementItems ModalView -->
+				<ResourceDictionary>
+					<DataTemplate
+						x:Key="StatementInfoViewModelTemplate"
+						DataType="{x:Type statementItemsViewModels:StatementInfoViewModel}">
+						<Grid
+							Margin="0 32 0 0">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition/>
+								<ColumnDefinition/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition/>
+								<RowDefinition/>
+								<RowDefinition/>
+							</Grid.RowDefinitions>
+
+							<Grid
+								Margin="0 0 0 8"
+								Grid.Column="0"
+								Grid.ColumnSpan="2"
+								Grid.Row="1">
+								<Grid.RowDefinitions>
+									<RowDefinition/>
+									<RowDefinition/>
+									<RowDefinition/>
+									<RowDefinition/>
+									<RowDefinition/>
+									<RowDefinition/>
+									<RowDefinition/>
+									<RowDefinition/>
+									<RowDefinition/>
+								</Grid.RowDefinitions>
+
+								<!-- AmountFormat -->
+								<Grid Row="0">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="*"/>
+									</Grid.ColumnDefinitions>
+
+									<TextBlock
+										Grid.Column="0"
+										FontSize="16"
+										FontWeight="Medium"
+										Margin="16 4 10 4"
+										Text="{DynamicResource MbStatementAmount}"/>
+
+									<TextBlock
+										Grid.Column="1"
+										FontSize="16"
+										FontWeight="Medium"
+										VerticalAlignment="Center"
+										Foreground="{Binding Foreground}"
+										HorizontalAlignment="Left"
+										Text="{Binding Path=StatementItem.AmountFormat}"/>
+								</Grid>
+
+								<!-- OperationAmountFormat -->
+								<Grid Row="1"
+								      Visibility="{Binding OperationAmountFormatVisibility}">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="*"/>
+									</Grid.ColumnDefinitions>
+
+									<TextBlock
+										Grid.Column="0"
+										FontSize="16"
+										FontWeight="Medium"
+										Margin="16 4 10 4"
+										Text="{DynamicResource MbStatementOperationAmount}">
+										<TextBlock.Style>
+											<Style
+												TargetType="TextBlock"
+												BasedOn="{StaticResource {x:Type TextBlock}}">
+												<Style.Triggers>
+													<DataTrigger 
+														Binding="{Binding Path=StatementItem.OperationAmount}"
+														Value="0">
+														<Setter Property="Visibility" Value="Collapsed"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</TextBlock.Style>
+									</TextBlock>
+
+									<TextBlock
+										Grid.Column="1"
+										FontSize="16"
+										FontWeight="Medium"
+										VerticalAlignment="Center"
+										Foreground="{Binding Foreground}"
+										HorizontalAlignment="Left"
+										Text="{Binding Path=StatementItem.OperationAmountFormat}">
+										<TextBlock.Style>
+											<Style
+												TargetType="TextBlock"
+												BasedOn="{StaticResource {x:Type TextBlock}}">
+												<Style.Triggers>
+													<DataTrigger 
+														Binding="{Binding Path=StatementItem.OperationAmount}"
+														Value="0">
+														<Setter Property="Visibility" Value="Collapsed"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</TextBlock.Style>
+									</TextBlock>
+								</Grid>
+
+								<!-- BalanceFormat -->
+								<Grid Row="2">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="*"/>
+									</Grid.ColumnDefinitions>
+
+									<TextBlock
+										Grid.Column="0"
+										FontSize="16"
+										FontWeight="Medium"
+										Margin="16 4 10 4"
+										Text="{DynamicResource MbStatementRemainder}"/>
+
+									<TextBlock
+										Grid.Column="1"
+										FontSize="16"
+										FontWeight="Medium"
+										VerticalAlignment="Center"
+										HorizontalAlignment="Left"
+										Text="{Binding Path=StatementItem.BalanceFormat}"/>
+								</Grid>
+
+								<!-- CommissionRateFormat -->
+								<Grid Row="3">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="*"/>
+									</Grid.ColumnDefinitions>
+									<TextBlock
+										Grid.Column="0"
+										Margin="16 4 10 4"
+										FontSize="16"
+										FontWeight="Medium"	
+										Text="{DynamicResource MbStatementCommission}">
+										<TextBlock.Style>
+											<Style
+												TargetType="TextBlock"
+												BasedOn="{StaticResource {x:Type TextBlock}}">
+												<Style.Triggers>
+													<DataTrigger 
+														Binding="{Binding Path=StatementItem.CommissionRate}"
+														Value="0">
+														<Setter Property="Visibility" Value="Collapsed"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</TextBlock.Style>
+									</TextBlock>
+
+									<TextBlock
+										Grid.Column="1"
+										FontSize="16"
+										FontWeight="Medium"
+										VerticalAlignment="Center"
+										HorizontalAlignment="Left"
+										Foreground="Red"
+										Text="{Binding Path=StatementItem.CommissionRateFormat}">
+										<TextBlock.Style>
+											<Style
+												TargetType="TextBlock"
+												BasedOn="{StaticResource {x:Type TextBlock}}">
+												<Style.Triggers>
+													<DataTrigger 
+														Binding="{Binding Path=StatementItem.CommissionRate}"
+														Value="0">
+														<Setter Property="Visibility" Value="Collapsed"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</TextBlock.Style>
+									</TextBlock>
+								</Grid>
+
+								<!-- CashbackAmountFormat -->
+								<Grid Row="4">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="*"/>
+									</Grid.ColumnDefinitions>
+									<TextBlock
+										Grid.Column="0"
+										Margin="16 4 10 4"
+										FontSize="16"
+										FontWeight="Medium"
+										Text="{DynamicResource MbStatementCashback}">
+										<TextBlock.Style>
+											<Style
+												TargetType="TextBlock"
+												BasedOn="{StaticResource {x:Type TextBlock}}">
+												<Style.Triggers>
+													<DataTrigger 
+														Binding="{Binding Path=StatementItem.CashbackAmount}"
+														Value="0">
+														<Setter Property="Visibility" Value="Collapsed"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</TextBlock.Style>
+									</TextBlock>
+
+									<TextBlock
+										Grid.Column="1"
+										VerticalAlignment="Center"
+										HorizontalAlignment="Left"
+										Foreground="Green"
+										FontSize="16"
+										FontWeight="Medium"
+										Text="{Binding Path=StatementItem.CashbackAmountFormat}">
+										<TextBlock.Style>
+											<Style
+												TargetType="TextBlock"
+												BasedOn="{StaticResource {x:Type TextBlock}}">
+												<Style.Triggers>
+													<DataTrigger 
+														Binding="{Binding Path=StatementItem.CashbackAmount}"
+														Value="0">
+														<Setter Property="Visibility" Value="Collapsed"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</TextBlock.Style>
+									</TextBlock>
+								</Grid>
+
+								<!-- Comment -->
+								<Grid Row="5">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="*"/>
+									</Grid.ColumnDefinitions>
+									<TextBlock
+										Grid.Column="0"
+										Margin="16 4 10 4"
+										FontSize="16"
+										FontWeight="Medium"
+										Text="{DynamicResource MbStatementComment}">
+										<TextBlock.Style>
+											<Style
+												TargetType="TextBlock"
+												BasedOn="{StaticResource {x:Type TextBlock}}">
+												<Style.Triggers>
+													<DataTrigger 
+														Binding="{Binding Path=StatementItem.Comment}"
+														Value="{x:Null}">
+														<Setter Property="Visibility" Value="Collapsed"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</TextBlock.Style>
+									</TextBlock>
+
+									<TextBlock
+										Grid.Column="1"
+										FontSize="16"
+										FontWeight="Medium"
+										VerticalAlignment="Center"
+										HorizontalAlignment="Left"
+										Text="{Binding Path=StatementItem.Comment}">
+										<TextBlock.Style>
+											<Style
+												TargetType="TextBlock"
+												BasedOn="{StaticResource {x:Type TextBlock}}">
+												<Style.Triggers>
+													<DataTrigger 
+														Binding="{Binding Path=StatementItem.Comment}"
+														Value="{x:Null}">
+														<Setter Property="Visibility" Value="Collapsed"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</TextBlock.Style>
+									</TextBlock>
+								</Grid>
+
+								<!-- Receipt -->
+								<Grid Row="6">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="*"/>
+									</Grid.ColumnDefinitions>
+									<TextBlock
+										Grid.Column="0"
+										Margin="16 4 10 4"
+										FontSize="16"
+										FontWeight="Medium"
+										Text="{DynamicResource MbStatementReceipt}">
+										<TextBlock.Style>
+											<Style
+												TargetType="TextBlock"
+												BasedOn="{StaticResource {x:Type TextBlock}}">
+												<Style.Triggers>
+													<DataTrigger 
+														Binding="{Binding Path=StatementItem.Receipt}"
+														Value="{x:Null}">
+														<Setter Property="Visibility" Value="Collapsed"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</TextBlock.Style>
+									</TextBlock>
+
+									<TextBlock
+										Grid.Column="1"
+										FontSize="16"
+										FontWeight="Medium"
+										VerticalAlignment="Center"
+										HorizontalAlignment="Left">
+										<Hyperlink
+											IsEnabled="{Binding IsHyperlinkEnabled}"
+											Command="{Binding GetReceiptCommand}"
+											Style="{DynamicResource MaterialDesignSubtitle2Hyperlink}"
+											CommandParameter="{Binding Path=StatementItem.Receipt}">
+											<Run>
+												<Run.Text>
+													<Binding Path="StatementItem.Receipt"></Binding>
+												</Run.Text>
+											</Run>
+										</Hyperlink>
+										<TextBlock.Style>
+											<Style
+												TargetType="TextBlock"
+												BasedOn="{StaticResource {x:Type TextBlock}}">
+												<Style.Triggers>
+													<DataTrigger 
+														Binding="{Binding Path=StatementItem.Receipt}"
+														Value="{x:Null}">
+														<Setter Property="Visibility" Value="Collapsed"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</TextBlock.Style>
+									</TextBlock>
+
+									<materialDesign:PackIcon
+										Grid.Column="2"
+										Margin="8 0"
+										Height="20"
+										Width="20"
+										ToolTip="{DynamicResource MbStatementReceiptInfo}"
+										VerticalAlignment="Center"
+										Cursor="Help"
+										Kind="InfoCircle">
+										<materialDesign:PackIcon.Style>
+											<Style
+												TargetType="materialDesign:PackIcon"
+												BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}">
+												<Style.Triggers>
+													<DataTrigger 
+														Binding="{Binding Path=StatementItem.Receipt}"
+														Value="{x:Null}">
+														<Setter Property="Visibility" Value="Collapsed"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</materialDesign:PackIcon.Style>
+									</materialDesign:PackIcon>
+								</Grid>
+
+								<!-- Edrpou -->
+								<Grid Row="7">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="*"/>
+									</Grid.ColumnDefinitions>
+									<TextBlock
+										Grid.Column="0"
+										Margin="16 4 10 4"
+										FontSize="16"
+										FontWeight="Medium"
+										ToolTip="{DynamicResource MbStatementEdrpouTooltip}"
+										Text="{DynamicResource MbStatementEdrpou}">
+										<TextBlock.Style>
+											<Style
+												TargetType="TextBlock"
+												BasedOn="{StaticResource {x:Type TextBlock}}">
+												<Style.Triggers>
+													<DataTrigger 
+														Binding="{Binding Path=StatementItem.Edrpou}"
+														Value="{x:Null}">
+														<Setter Property="Visibility" Value="Collapsed"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</TextBlock.Style>
+									</TextBlock>
+
+									<TextBlock
+										Grid.Column="1"
+										FontSize="16"
+										FontWeight="Medium"
+										VerticalAlignment="Center"
+										HorizontalAlignment="Left"
+										ToolTip="{DynamicResource MbStatementEdrpouTooltip}"
+										Text="{Binding Path=StatementItem.Edrpou}">
+										<TextBlock.Style>
+											<Style
+												TargetType="TextBlock"
+												BasedOn="{StaticResource {x:Type TextBlock}}">
+												<Style.Triggers>
+													<DataTrigger 
+														Binding="{Binding Path=StatementItem.Edrpou}"
+														Value="{x:Null}">
+														<Setter Property="Visibility" Value="Collapsed"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</TextBlock.Style>
+									</TextBlock>
+								</Grid>
+
+								<!-- IBAN -->
+								<Grid Row="8">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="*"/>
+									</Grid.ColumnDefinitions>
+									<TextBlock
+										Grid.Column="0"
+										Margin="16 4 10 4"
+										FontSize="16"
+										FontWeight="Medium"
+										ToolTip="{DynamicResource MbStatementIbanTooltip}"
+										Text="{DynamicResource MbStatementIban}">
+										<TextBlock.Style>
+											<Style
+												TargetType="TextBlock"
+												BasedOn="{StaticResource {x:Type TextBlock}}">
+												<Style.Triggers>
+													<DataTrigger 
+														Binding="{Binding Path=StatementItem.Iban}"
+														Value="{x:Null}">
+														<Setter Property="Visibility" Value="Collapsed"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</TextBlock.Style>
+									</TextBlock>
+
+									<TextBlock
+										Grid.Column="1"
+										FontSize="16"
+										FontWeight="Medium"
+										VerticalAlignment="Center"
+										HorizontalAlignment="Left"
+										ToolTip="{DynamicResource MbStatementIbanTooltip}"
+										Text="{Binding Path=StatementItem.Iban}">
+										<TextBlock.Style>
+											<Style
+												TargetType="TextBlock"
+												BasedOn="{StaticResource {x:Type TextBlock}}">
+												<Style.Triggers>
+													<DataTrigger 
+														Binding="{Binding Path=StatementItem.Iban}"
+														Value="{x:Null}">
+														<Setter Property="Visibility" Value="Collapsed"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</TextBlock.Style>
+									</TextBlock>
+
+									<materialDesign:PackIcon
+										Grid.Column="2"
+										Margin="8 0"
+										Height="20"
+										Width="20"
+										ToolTip="{DynamicResource MbStatementIbanTooltip}"
+										VerticalAlignment="Center"
+										Cursor="Help"
+										Kind="InfoCircle">
+										<materialDesign:PackIcon.Style>
+											<Style
+												TargetType="materialDesign:PackIcon"
+												BasedOn="{StaticResource {x:Type materialDesign:PackIcon}}">
+												<Style.Triggers>
+													<DataTrigger 
+														Binding="{Binding Path=StatementItem.Iban}"
+														Value="{x:Null}">
+														<Setter Property="Visibility" Value="Collapsed"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</materialDesign:PackIcon.Style>
+									</materialDesign:PackIcon>
+								</Grid>
+							</Grid>
+
+							<StackPanel
+								Grid.Column="0"
+								Grid.ColumnSpan="2"
+								Grid.Row="2">
+								<Border
+									CornerRadius="16 16 0 0"
+									Background="RoyalBlue"
+									ToolTip="{Binding Path=StatementItem.MccFullDescription}">
+									<TextBlock
+										Margin="12"
+										FontWeight="Bold"
+										HorizontalAlignment="Center"
+										VerticalAlignment="Center"
+										TextWrapping="Wrap"
+										Foreground="{DynamicResource MaterialDesignDarkForeground}"
+										TextTrimming="CharacterEllipsis"
+										Text="{Binding Path=StatementItem.MccDescription}"/>
+								</Border>
+
+								<Border
+									CornerRadius="0 0 16 16"
+									Background="{DynamicResource MaterialDesignDarkBackground}">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition/>
+											<ColumnDefinition/>
+										</Grid.ColumnDefinitions>
+
+										<TextBlock
+											Grid.Column="0"
+											FontWeight="Bold"
+											Margin="12"
+											VerticalAlignment="Center"
+											HorizontalAlignment="Center"
+											TextTrimming="CharacterEllipsis"
+											ToolTip="{Binding Path=StatementItem.FormatDate}"
+											Foreground="{DynamicResource MaterialDesignDarkForeground}"
+											Text="{Binding Path=StatementItem.FormatDate}"/>
+
+										<TextBlock
+											Grid.Column="1"
+											FontWeight="Bold"
+											VerticalAlignment="Center"
+											HorizontalAlignment="Center"
+											TextTrimming="CharacterEllipsis"
+											ToolTip="{Binding Path=StatementItem.FormatTime}"
+											Foreground="{DynamicResource MaterialDesignDarkForeground}"
+											Text="{Binding Path=StatementItem.FormatTime}"/>
+									</Grid>
+								</Border>
+
+							</StackPanel>
+
+							<materialDesign:Snackbar
+								Grid.Row="2"
+								Grid.Column="0"
+								Grid.ColumnSpan="2"
+								Margin="16"
+								MessageQueue="{Binding Messages}"/>
+						</Grid>
+					</DataTemplate>
+				</ResourceDictionary>
+
+				<!-- QR Code ModalView -->
+				<ResourceDictionary>
+					<DataTemplate
+						x:Key="QrCodeViewModelTemplate">
+						<materialDesign:Transitioner
+							SelectedIndex="{Binding QrCodeTransitionerIndex, Mode=TwoWay}">
+							<materialDesign:TransitionerSlide>
+								<StackPanel
+									VerticalAlignment="Center">
+									<TextBox
+										Name="AmountBox"
+										Margin="8"
+										materialDesign:HintAssist.Hint="{DynamicResource MbAmountFundsOptional}"
+										materialDesign:ValidationAssist.Background="Transparent"
+										materialDesign:ValidationAssist.PopupPlacement="Bottom"
+										materialDesign:TextFieldAssist.HasClearButton="True"
+										ToolTip="{DynamicResource MbAmountFundsFormatTooltip}"
+										Style="{DynamicResource MaterialDesignFilledTextBox}">
+										<TextBox.Text>
+											<Binding
+												Path="Amount"
+												UpdateSourceTrigger="PropertyChanged"
+												NotifyOnValidationError="True">
+												<Binding.ValidationRules>
+													<validation:OnlyNumberOptionalValiation
+														ValidatesOnTargetUpdated="True"/>
+												</Binding.ValidationRules>
+											</Binding>
+										</TextBox.Text>
+									</TextBox>
+
+									<TextBox
+										Margin="8"
+										materialDesign:TextFieldAssist.HasClearButton="True"
+										materialDesign:HintAssist.Hint="{DynamicResource MbCommentOptional}"
+										Text="{Binding Comment,
+											Mode=TwoWay,
+											UpdateSourceTrigger=PropertyChanged,
+											NotifyOnTargetUpdated=True}"
+										Style="{DynamicResource MaterialDesignFilledTextBox}"/>
+									<Button
+										Margin="8"
+										Command="{Binding GenerateQrCodeCommand}"
+										Content="{DynamicResource MbQrCodeGenerate}">
+										<Button.Style>
+											<Style
+												TargetType="Button"
+												BasedOn="{StaticResource WhiteButton}">
+												<Style.Triggers>
+													<DataTrigger
+														Binding="{Binding Path=(Validation.HasError), ElementName=AmountBox}"
+														Value="True">
+														<Setter Property="IsEnabled" Value="False"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</Button.Style>
+									</Button>
+								</StackPanel>
+							</materialDesign:TransitionerSlide>
+							<materialDesign:TransitionerSlide>
+								<Grid Margin="8">
+									<Grid.RowDefinitions>
+										<RowDefinition/>
+										<RowDefinition/>
+										<RowDefinition/>
+									</Grid.RowDefinitions>
+									<Border
+										CornerRadius="32"
+										Grid.Row="0">
+										<Border.Background>
+											<ImageBrush ImageSource="{Binding QrCodeImage}"/>
+										</Border.Background>
+									</Border>
+									<Button
+										Grid.Row="0"
+										IsEnabled="{Binding IsCopyEnable}"
+										materialDesign:ButtonAssist.CornerRadius="32"
+										Command="{Binding CopyImageCommand}"
+										Height="350"
+										Style="{DynamicResource MaterialDesignFlatAccentButton}"/>
+
+									<Grid Row="1">
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition/>
+											<ColumnDefinition/>
+										</Grid.ColumnDefinitions>
+										<Button
+											Grid.Column="0"
+											Margin="8"
+											Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}"
+											Content="{DynamicResource MbBack}"/>
+										<Button
+											Grid.Column="1"
+											IsEnabled="{Binding IsCopyEnable}"
+											Command="{Binding CopyLinkCommand}"
+											Margin="8">
+											<Button.Content>
+												<StackPanel Orientation="Horizontal">
+													<materialDesign:PackIcon
+														Margin="8 0"
+														Kind="ShareVariant"/>
+													<TextBlock Text="{DynamicResource MbShareLink}"/>
+												</StackPanel>
+											</Button.Content>
+										</Button>
+									</Grid>
+									<materialDesign:Snackbar
+										Grid.Row="2"
+										Margin="16"
+										Name="MainWindowSnackbar"
+										MessageQueue="{Binding Messages}"/>
+								</Grid>
+							</materialDesign:TransitionerSlide>
+						</materialDesign:Transitioner>
+					</DataTemplate>
+				</ResourceDictionary>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Application.Resources>
+</Application>

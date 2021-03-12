@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Monoboard.Properties" GeneratedClassName="DelaySettings">
+  <Profiles />
+  <Settings>
+    <Setting Name="InfoDelay" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">2021-01-01</Value>
+    </Setting>
+    <Setting Name="OtherDelay" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">2021-01-01</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

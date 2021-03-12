@@ -1,0 +1,247 @@
+﻿<UserControl
+	x:Class="Monoboard.View.Content.Card.BankCardTemplate"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+	<Grid
+		Name="GridBackground">
+		<materialDesign:Flipper
+			Name="Flipper"
+			Height="385"
+			Width="595"
+			Margin="128 128 128 192">
+			<materialDesign:Flipper.FrontContent>
+				<materialDesign:Card
+					Name="CardFront"
+					UniformCornerRadius="16">
+					<Grid>
+						<StackPanel
+							VerticalAlignment="Top"
+							HorizontalAlignment="Left"
+							Margin="16"
+							Orientation="Horizontal">
+							<TextBlock
+								Name="LogoMono"
+								VerticalAlignment="Center"
+								FontWeight="Bold"
+								FontSize="32"
+								Margin="16 0 8 0"
+								Text="monobank"/>
+							<TextBlock
+								Name="LogoUniversal"
+								Opacity=".5"
+								VerticalAlignment="Center"
+								FontWeight="Medium"
+								FontSize="32"
+								Text="| Universal Bank"/>
+						</StackPanel>
+
+						<StackPanel
+							Margin="40 80">
+							<Image
+								Margin="32 32 0 16"
+								VerticalAlignment="Top"
+								HorizontalAlignment="Left"
+								Height="64"
+								Source="../../../Resources/Images/CardChip.png"/>
+
+							<StackPanel
+								Orientation="Horizontal"
+								Margin="16 0"
+								HorizontalAlignment="Left">
+
+								<TextBlock
+									Name="MoneyCardTitle"
+									Margin="0 8"
+									FontFamily="{StaticResource WhiteRabbit}"
+									FontSize="32"
+									FontWeight="Medium"
+									Text="{DynamicResource MbBalance}"/>
+
+								<TextBlock
+									Name="MoneyCard"
+									Margin="8"
+									FontFamily="{StaticResource WhiteRabbit}"
+									FontSize="32"
+									FontWeight="Medium"
+									Text="{Binding Balance}"/>
+							</StackPanel>
+
+							<StackPanel
+								Margin="16 0"
+								Orientation="Horizontal"
+								HorizontalAlignment="Left">
+
+								<TextBlock
+									Name="CreditLimitCardTitle"
+									Margin="0 8"
+									FontFamily="{StaticResource WhiteRabbit}"
+									FontSize="24"
+									FontWeight="Medium"
+									Text="{DynamicResource MbCreditLimit}"/>
+
+								<TextBlock
+									Name="CreditLimitCard"
+									Margin="8"
+									HorizontalAlignment="Left"
+									FontFamily="{StaticResource WhiteRabbit}"
+									FontSize="24"
+									FontWeight="Medium"
+									Text="{Binding CreditLimit}"/>
+							</StackPanel>
+						</StackPanel>
+
+						<materialDesign:PackIcon
+							Name="ContactlessIcon"
+							Height="64"
+							Width="64"
+							Margin="72 112"
+							HorizontalAlignment="Right"
+							Kind="ContactlessPayment"/>
+
+						<Button
+							materialDesign:ButtonAssist.CornerRadius="24 0 0 24"
+							HorizontalAlignment="Right"
+							Width="48"
+							Height="48"
+							Padding="0"
+							Style="{StaticResource RedButton}"
+							Command="{x:Static materialDesign:Flipper.FlipCommand}">
+							<Button.Content>
+								<materialDesign:PackIcon
+									Height="24"
+									Width="24"
+									Kind="FlipHorizontal"/>
+							</Button.Content>
+						</Button>
+
+						<Image
+							Name="CardSystemImage"
+							Height="80"
+							Width="97"
+							Margin="16"
+							HorizontalAlignment="Right"
+							VerticalAlignment="Bottom"/>
+					</Grid>
+				</materialDesign:Card>
+			</materialDesign:Flipper.FrontContent>
+			<materialDesign:Flipper.BackContent>
+				<materialDesign:Card
+					Name="CardBack"
+					UniformCornerRadius="16">
+					<Grid>
+						<Grid
+							Name="CardLine"
+							Margin="0 32"
+							Height="80"
+							VerticalAlignment="Top"/>
+
+						<TextBlock
+							Name="CardTypeName"
+							Margin="0 56"
+							FontSize="24"
+							FontWeight="Bold"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Top"/>
+
+						<ComboBox
+							Name="CardListBox"
+							FontFamily="{StaticResource WhiteRabbit}"
+							FontSize="40"
+							FontWeight="Bold"
+							HorizontalAlignment="Center"
+							Padding="8"
+							VerticalAlignment="Center"
+							Style="{DynamicResource MaterialDesignOutlinedComboBox}">
+							<ComboBox.ItemContainerStyle>
+								<Style
+									TargetType="ComboBoxItem"
+									BasedOn="{StaticResource MaterialDesignComboBoxItemStyle}">
+									<Setter Property="Foreground" Value="{DynamicResource ResourceKey=MaterialDesignBody}"/>
+									<Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}"/>
+								</Style>
+							</ComboBox.ItemContainerStyle>
+						</ComboBox>
+
+						<TextBlock
+							Name="CardNumber"
+							FontFamily="{StaticResource WhiteRabbit}"
+							FontSize="40"
+							FontWeight="Bold"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center"/>
+
+						<Border
+							Name="IbanBorder"
+							Height="70"
+							Width="465"
+							CornerRadius="8"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Bottom"
+							Margin="0 64">
+						</Border>
+
+						<StackPanel
+							HorizontalAlignment="Center"
+							VerticalAlignment="Bottom"
+							Opacity="1"
+							Height="70"
+							Margin="0 64"
+							Orientation="Horizontal">
+							<StackPanel
+								Margin="8">
+								<TextBlock
+									Name="CardIbanTitle"
+									FontFamily="{StaticResource WhiteRabbit}"
+									FontSize="24"
+									Text="IBAN"
+									FontWeight="Medium"
+									HorizontalAlignment="Center"
+									VerticalAlignment="Bottom"/>
+
+								<TextBlock
+									Name="CardIban"
+									FontFamily="{StaticResource WhiteRabbit}"
+									FontSize="24"
+									Margin="0 16 0 0"
+									FontWeight="Medium"
+									HorizontalAlignment="Center"
+									VerticalAlignment="Bottom"/>
+							</StackPanel>
+							<Button
+								Name="CopyIbanButton"
+								Style="{DynamicResource RedButton}"
+								Click="CopyIbanButton_OnClick"
+								Height="70"
+								materialDesign:ButtonAssist.CornerRadius="0 8 8 0"
+								ToolTip="{DynamicResource MbCopy}"
+								Content="{materialDesign:PackIcon Kind=ContentCopy, Size=20}"/>
+						</StackPanel>
+
+						<Button
+							materialDesign:ButtonAssist.CornerRadius="0 24 24 0"
+							HorizontalAlignment="Left"
+							Width="48"
+							Height="48"
+							Padding="0"
+							Style="{StaticResource RedButton}"
+							Command="{x:Static materialDesign:Flipper.FlipCommand}">
+							<Button.Content>
+								<materialDesign:PackIcon
+								Width="24"
+								Height="24"
+								Kind="FlipHorizontal"/>
+							</Button.Content>
+						</Button>
+					</Grid>
+				</materialDesign:Card>
+			</materialDesign:Flipper.BackContent>
+		</materialDesign:Flipper>
+
+		<materialDesign:Snackbar
+			Margin="0 0 0 64"
+			Name="Snackbar"
+			MessageQueue="{materialDesign:MessageQueue}"/>
+	</Grid>
+</UserControl>

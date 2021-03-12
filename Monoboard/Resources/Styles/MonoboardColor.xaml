@@ -1,0 +1,25 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<Color x:Key="PrimaryLightColor">#ff736a</Color>
+	<Color x:Key="PrimaryLightColorForeground">#000000</Color>
+
+	<Color x:Key="PrimaryColor">#f43b3f</Color>
+	<Color x:Key="PrimaryColorForeground">#ffffff</Color>
+
+	<Color x:Key="PrimaryDarkColor">#ba0017</Color>
+	<Color x:Key="PrimaryDarkColorForeground">#ffffff</Color>
+
+	<Color x:Key="SecondaryColor">#06b206</Color>
+	<Color x:Key="SecondaryColorForeground">#ffffff</Color>
+
+	<Color x:Key="ProhibitoryColor">#c62828</Color>
+	<Color x:Key="ProhibitoryColorForeground">#ffffff</Color>
+
+	<Color x:Key="AllowingColor">#2e7d32</Color>
+	<Color x:Key="AllowingColorForeground">#ffffff</Color>
+
+	<Color x:Key="WhiteColor">#ffffff</Color>
+
+</ResourceDictionary>

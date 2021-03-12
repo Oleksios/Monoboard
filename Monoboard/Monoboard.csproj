@@ -1,0 +1,142 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<OutputType>WinExe</OutputType>
+	<BeautyLibsDir>libraries</BeautyLibsDir>
+	<DisableBeauty>False</DisableBeauty>
+	<UseWPF>true</UseWPF>
+	<NoBeautyFlag>False</NoBeautyFlag>
+	<ForceBeauty>False</ForceBeauty>
+	<Nullable>enable</Nullable>
+	<DisablePatch>False</DisablePatch>
+	<BeautyLogLevel>Error</BeautyLogLevel>
+	<SignAssembly>False</SignAssembly>
+	<ApplicationIcon>Resources\Icon.ico</ApplicationIcon>
+	<NoWin32Manifest>true</NoWin32Manifest>
+	<TargetFramework>net5.0-windows</TargetFramework>
+	<StartupObject>Monoboard.App</StartupObject>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<PlatformTarget>AnyCPU</PlatformTarget>
+	<DefineConstants>$(DefineConstants)Release</DefineConstants>
+	<Optimize>True</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<PlatformTarget>AnyCPU</PlatformTarget>
+	<DefineConstants>$(DefineConstants)Release</DefineConstants>
+	<Optimize>False</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<None Remove="Resources\BackgroundVariant1.png" />
+	<None Remove="Resources\BackgroundVariant2.png" />
+	<None Remove="Resources\Images\BackgroundVariant3.png" />
+	<None Remove="Resources\Images\BackgroundVariant4.png" />
+	<None Remove="Resources\Images\BackgroundVariant5.png" />
+	<None Remove="Resources\Images\CardChip.png" />
+	<None Remove="Resources\Images\CardChip.svg" />
+	<None Remove="Resources\Images\Mastercard-Dark.png" />
+	<None Remove="Resources\Images\Mastercard-Light.png" />
+	<None Remove="Resources\Images\Mastercard.png" />
+	<None Remove="Resources\Images\NoLogo.jpg" />
+	<None Remove="Resources\Images\Visa-Dark.png" />
+	<None Remove="Resources\Images\Visa-Light.png" />
+	<None Remove="Resources\MonoboardLogo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<PackageReference Include="MaterialDesignExtensions" Version="3.3.0-a01" />
+	<PackageReference Include="MaterialDesignThemes" Version="4.0.0" />
+	<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.664.37" />
+	<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
+	<PackageReference Include="nulastudio.NetCoreBeauty" Version="1.2.9.2" />
+	<PackageReference Include="QRCoder" Version="1.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<ProjectReference Include="..\MonoboardCore\MonoboardCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<Resource Include="Resources\Images\BackgroundVariant1.png" />
+	<Resource Include="Resources\Images\BackgroundVariant2.png" />
+	<Resource Include="Resources\Images\BackgroundVariant3.png" />
+	<Resource Include="Resources\Images\BackgroundVariant4.png" />
+	<Resource Include="Resources\Images\BackgroundVariant5.png" />
+	<Resource Include="Resources\Images\CardChip.png" />
+	<Resource Include="Resources\Images\Mastercard-Dark.png" />
+	<Resource Include="Resources\Images\Mastercard-Light.png" />
+	<Resource Include="Resources\Images\NoLogo.jpg" />
+	<Resource Include="Resources\Images\Visa-Dark.png" />
+	<Resource Include="Resources\Images\Visa-Light.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<SplashScreen Include="Resources\Images\MonoboardLogo.png" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="Fonts\WhiteRabbit\whitrabt.ttf">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+	</ItemGroup>
+
+  <ItemGroup>
+	<Compile Update="Properties\DelaySettings.Designer.cs">
+	  <DesignTimeSharedInput>True</DesignTimeSharedInput>
+	  <AutoGen>True</AutoGen>
+	  <DependentUpon>DelaySettings.settings</DependentUpon>
+	</Compile>
+	<Compile Update="Properties\PaletteSettings.Designer.cs">
+	  <DesignTimeSharedInput>True</DesignTimeSharedInput>
+	  <AutoGen>True</AutoGen>
+	  <DependentUpon>PaletteSettings.settings</DependentUpon>
+	</Compile>
+	<Compile Update="Properties\Resource.Designer.cs">
+	  <DesignTime>True</DesignTime>
+	  <AutoGen>True</AutoGen>
+	  <DependentUpon>Resource.resx</DependentUpon>
+	</Compile>
+	<Compile Update="Properties\Settings.Designer.cs">
+	  <DesignTimeSharedInput>True</DesignTimeSharedInput>
+	  <AutoGen>True</AutoGen>
+	  <DependentUpon>Settings.settings</DependentUpon>
+	</Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+	<EmbeddedResource Update="Properties\Resource.resx">
+	  <Generator>ResXFileCodeGenerator</Generator>
+	  <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+	</EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+	<None Update="Properties\DelaySettings.settings">
+	  <Generator>SettingsSingleFileGenerator</Generator>
+	  <LastGenOutput>DelaySettings.Designer.cs</LastGenOutput>
+	</None>
+	<None Update="Properties\PaletteSettings.settings">
+	  <Generator>SettingsSingleFileGenerator</Generator>
+	  <LastGenOutput>PaletteSettings.Designer.cs</LastGenOutput>
+	</None>
+	<None Update="Properties\Settings.settings">
+	  <Generator>SettingsSingleFileGenerator</Generator>
+	  <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+	</None>
+	<None Update="Resources\JS\qrCodeMessages.js">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</None>
+	<None Update="Resources\JS\qrCodeVisualFormatter.js">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</None>
+	<None Update="Resources\mcc.json">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</None>
+  </ItemGroup>
+
+</Project>

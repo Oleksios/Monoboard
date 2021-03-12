@@ -1,0 +1,1 @@
+document.getElementsByTagName('p')[0].innerHTML = "<h1 style=\"text-align: justify;\">Цей QR-код потрібно просканувати! А також повинен бути встановлений додаток \"Монобанк\" на вашому смартфоні.</h1>";

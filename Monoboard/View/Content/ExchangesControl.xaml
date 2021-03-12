@@ -1,0 +1,432 @@
+﻿<UserControl
+	x:Class="Monoboard.View.Content.ExchangesControl"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+	xmlns:mde="https://spiegelp.github.io/MaterialDesignExtensions/winfx/xaml"
+	xmlns:exchangeRatesViewModels="clr-namespace:Monoboard.ViewModel.ExchangeRatesViewModels"
+	xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+	xmlns:validation="clr-namespace:Monoboard.Helpers.Validation"
+	mc:Ignorable="d"
+	d:DesignHeight="450" d:DesignWidth="800">
+	<UserControl.Resources>
+		<DataTemplate
+			x:Key="CurrencyConverterViewModelTemplate"
+			DataType="{x:Type exchangeRatesViewModels:CurrencyConverterViewModel}">
+			<StackPanel>
+				<TextBlock
+					Margin="16"
+					FontWeight="Medium"
+					FontSize="18"
+					HorizontalAlignment="Center"
+					Text="{Binding CurrencyName}"/>
+				<TextBox
+					Name="CurrencyCount"
+					Style="{DynamicResource MaterialDesignFilledTextBox}"
+					materialDesign:ValidationAssist.Background="Transparent"
+					materialDesign:HintAssist.Hint="{DynamicResource MbCount}">
+					<Binding
+						Path="Count"
+						Mode="TwoWay"
+						UpdateSourceTrigger="PropertyChanged"
+						NotifyOnValidationError="True">
+						<Binding.ValidationRules>
+							<validation:OnlyNumberValidation
+								ValidatesOnTargetUpdated="True"/>
+						</Binding.ValidationRules>
+					</Binding>
+					<b:Interaction.Triggers>
+						<b:EventTrigger EventName="TextChanged">
+							<b:InvokeCommandAction
+								Command="{Binding CurrencyCalculateCommand}"
+								CommandParameter="{Binding ElementName=CurrencyCount, Path=Text}"/>
+						</b:EventTrigger>
+					</b:Interaction.Triggers>
+				</TextBox>
+				<StackPanel
+					Margin="16"
+					HorizontalAlignment="Center"
+					Orientation="Horizontal">
+					<TextBlock
+						FontWeight="Medium"
+						FontSize="16"
+						VerticalAlignment="Center"
+						Text="{Binding CurrencyTag}">
+					</TextBlock>
+
+					<ToggleButton
+						Margin="8"
+						IsChecked="{Binding IsFirstCurrencySell}"
+						Style="{StaticResource MaterialDesignActionAccentToggleButton}"
+						Content="{materialDesign:PackIcon Kind=ArrowLeftBold}"
+						materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=ArrowRightBold}">
+						<b:Interaction.Triggers>
+							<b:EventTrigger EventName="Checked">
+								<b:InvokeCommandAction
+									Command="{Binding CurrencyCalculateCommand}"
+									CommandParameter="{Binding ElementName=CurrencyCount, Path=Text}"/>
+							</b:EventTrigger>
+							<b:EventTrigger EventName="Unchecked">
+								<b:InvokeCommandAction
+									Command="{Binding CurrencyCalculateCommand}"
+									CommandParameter="{Binding ElementName=CurrencyCount, Path=Text}"/>
+							</b:EventTrigger>
+						</b:Interaction.Triggers>
+					</ToggleButton>
+
+					<TextBlock
+						FontWeight="Medium"
+						FontSize="16"
+						VerticalAlignment="Center"
+						Text="UAH">
+					</TextBlock>
+				</StackPanel>
+				<TextBox
+					IsReadOnly="True"
+					Text="{Binding Result}"
+					Style="{DynamicResource MaterialDesignFilledTextBox}"
+					materialDesign:HintAssist.Hint="{DynamicResource MbResult}"/>
+			</StackPanel>
+		</DataTemplate>
+	</UserControl.Resources>
+	<materialDesign:DialogHost
+		IsOpen="{Binding IsOpenDialogHostConverter}"
+		Name="DialogHostConverter">
+		<Grid>
+			<Grid
+				Background="{DynamicResource MaterialDesignPaper}">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+
+				<ListBox
+					Grid.Row="0"
+					Name="MainCurrencyList"
+					Style="{DynamicResource MaterialDesignCardsListBox}"
+					SelectionChanged="MainCurrencyList_OnSelectionChanged"
+					materialDesign:RippleAssist.IsDisabled="False"
+					ItemsSource="{Binding MainCurrencies}">
+					<ListBox.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel
+								HorizontalAlignment="Center"
+								Margin="16"/>
+						</ItemsPanelTemplate>
+					</ListBox.ItemsPanel>
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel>
+								<TextBlock
+									Foreground="{DynamicResource MaterialDesignBody}"
+									Margin="8"
+									HorizontalAlignment="Center"
+									VerticalAlignment="Top"
+									FontSize="24"
+									FontWeight="Medium"
+									Text="{Binding Path=CurrencyNameLocalized}">
+								</TextBlock>
+
+								<Grid
+									Margin="16 0"
+									HorizontalAlignment="Left">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition/>
+										<ColumnDefinition/>
+									</Grid.ColumnDefinitions>
+									<Grid.RowDefinitions>
+										<RowDefinition/>
+										<RowDefinition/>
+									</Grid.RowDefinitions>
+									<TextBlock
+										Grid.Column="0"
+										Grid.Row="0"
+										Foreground="{DynamicResource MaterialDesignBody}"
+										Margin="8 4"
+										FontSize="16"
+										FontWeight="Medium"
+										Text="{DynamicResource MbBuy:}">
+									</TextBlock>
+									<TextBlock
+										Grid.Column="1"
+										Grid.Row="0"
+										Foreground="{DynamicResource MaterialDesignBody}"
+										Margin="8 4"
+										FontSize="16"
+										FontWeight="Medium"
+										Text="{Binding Path=RateBuy}">
+									</TextBlock>
+
+									<TextBlock
+										Grid.Column="0"
+										Grid.Row="1"
+										Foreground="{DynamicResource MaterialDesignBody}"
+										Margin="8 4"
+										FontSize="16"
+										FontWeight="Medium"
+										Text="{DynamicResource MbSell:}">
+									</TextBlock>
+									<TextBlock
+										Grid.Column="1"
+										Grid.Row="1"
+										Foreground="{DynamicResource MaterialDesignBody}"
+										Margin="8 4"
+										FontSize="16"
+										FontWeight="Medium"
+										Text="{Binding Path=RateSell}">
+									</TextBlock>
+								</Grid>
+
+								<Border
+									Background="{DynamicResource MaterialDesignBackground}"
+									HorizontalAlignment="Center"
+									Opacity="0.7">
+									<TextBlock
+										Margin="12"
+										FontSize="14"
+										FontWeight="Bold"
+										VerticalAlignment="Center"
+										HorizontalAlignment="Right"
+										Foreground="{DynamicResource MaterialDesignForeground}"
+										Text="{Binding Path=InfoDate}"/>
+								</Border>
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+
+				<Grid Row="1">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="Auto"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition/>
+						<RowDefinition/>
+					</Grid.RowDefinitions>
+					<mde:PersistentSearch
+						Grid.Column="0"
+						Grid.Row="0"
+						Name="PersistentSearch"
+						VerticalAlignment="Top"
+						Margin="32 8 128 8"
+						SearchIcon="{materialDesign:PackIcon Search}"
+						FontSize="16"
+						Padding="16"
+						SearchTerm="{Binding SearshTerm, Mode=TwoWay}"
+						SearchHint="{DynamicResource MbSearch}"
+						SearchSuggestionsSource="{Binding Path=SearchSuggestionsSource}"
+						Search="SearchHandler_OnSearch" />
+					<StackPanel
+						Grid.Column="1"
+						Grid.Row="0"
+						HorizontalAlignment="Right"
+						Orientation="Horizontal" Cursor="Hand">
+						<Button
+							materialDesign:ShadowAssist.ShadowDepth="Depth0"
+							HorizontalAlignment="Right"
+							materialDesign:ButtonAssist.CornerRadius="25 0 0 25"
+							Command="{Binding GetDataCommand}"
+							Style="{StaticResource MaterialDesignRaisedAccentButton}"
+							Padding="0"
+							Height="50" Cursor="Hand">
+							<Button.Content>
+								<StackPanel Orientation="Horizontal">
+									<materialDesign:PackIcon
+										Margin="8"
+										Width="32"
+										Height="32"
+										HorizontalAlignment="Center"
+										VerticalAlignment="Center"
+										Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+										Kind="DownloadCircle" />
+									<TextBlock
+										FontWeight="Medium"
+										Foreground="{DynamicResource SecondaryHueMidForegroundBrush}"
+										Margin="4 0 16 0"
+										VerticalAlignment="Center"
+										Text="{DynamicResource MbDownload}"/>
+								</StackPanel>
+							</Button.Content>
+						</Button>
+						<Button
+							materialDesign:ShadowAssist.ShadowDepth="Depth0"
+							HorizontalAlignment="Right"
+							materialDesign:ButtonAssist.CornerRadius="0"
+							Command="{Binding RefreshCommand}"
+							Click="RefreshButton_OnClick"
+							Style="{StaticResource MaterialDesignRaisedButton}"
+							Padding="0"
+							Height="50">
+							<Button.Content>
+								<StackPanel Orientation="Horizontal">
+									<materialDesign:PackIcon
+										Margin="8"
+										Width="32"
+										Height="32"
+										HorizontalAlignment="Center"
+										VerticalAlignment="Center"
+										Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+										Kind="ClearCircle" />
+									<TextBlock
+										FontWeight="Medium"
+										Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+										Margin="4 0 16 0"
+										VerticalAlignment="Center"
+										Text="{DynamicResource MbClear}"/>
+								</StackPanel>
+							</Button.Content>
+						</Button>
+					</StackPanel>
+					<TextBlock
+						Grid.Column="0"
+						Grid.Row="1"
+						Margin="16 8"
+						HorizontalAlignment="Left"
+						FontWeight="Medium"
+						FontSize="24"
+						Text="{DynamicResource MbCurrency}">
+						<TextBlock.Style>
+							<Style
+								TargetType="TextBlock"
+								BasedOn="{StaticResource {x:Type TextBlock}}">
+								<Style.Triggers>
+									<DataTrigger 
+										Binding="{Binding ElementName=SecondaryCurrencyList, Path=Items.Count}"
+										Value="0">
+										<Setter Property="Visibility" Value="Collapsed"/>
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</TextBlock.Style>
+					</TextBlock>
+					<TextBlock
+						Grid.Column="1"
+						Grid.Row="1"
+						HorizontalAlignment="Right"
+						Margin="16 8"
+						FontWeight="Medium"
+						FontSize="24"
+						Text="{DynamicResource MbRateTitle}">
+						<TextBlock.Style>
+							<Style
+								TargetType="TextBlock"
+								BasedOn="{StaticResource {x:Type TextBlock}}">
+								<Style.Triggers>
+									<DataTrigger 
+										Binding="{Binding ElementName=SecondaryCurrencyList, Path=Items.Count}"
+										Value="0">
+										<Setter Property="Visibility" Value="Collapsed"/>
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</TextBlock.Style>
+					</TextBlock>
+				</Grid>
+
+				<ListBox
+					Name="SecondaryCurrencyList"
+					SelectionChanged="SecondaryCurrencyList_OnSelectionChanged"
+					HorizontalContentAlignment="Stretch"
+					Grid.Row="2"
+					ItemsSource="{Binding OtherCurrencies, Mode=TwoWay}">
+					<ListBox.Style>
+						<Style
+							TargetType="ListBox"
+							BasedOn="{StaticResource {x:Type ListBox}}">
+							<Style.Triggers>
+								<DataTrigger 
+									Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Items.Count}"
+									Value="0">
+									<Setter Property="Template">
+										<Setter.Value>
+											<ControlTemplate>
+												<StackPanel
+													Margin="0 -128 0 0"
+													HorizontalAlignment="Center"
+													VerticalAlignment="Center">
+													<materialDesign:PackIcon
+														HorizontalAlignment="Center"
+														Height="128"
+														Width="128"
+														Foreground="{DynamicResource ProhibitoryHueBrush}"
+														Kind="FaceDead"/>
+													<TextBlock
+														Foreground="{DynamicResource ProhibitoryHueBrush}"
+														FontWeight="Medium"
+														FontSize="32"
+														TextAlignment="Center"
+														Text="{DynamicResource MbExchangeRatesNotFind}"/>
+												</StackPanel>
+											</ControlTemplate>
+										</Setter.Value>
+									</Setter>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</ListBox.Style>
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="64"/>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+
+								<materialDesign:PackIcon
+									VerticalAlignment="Center"
+									Height="24"
+									Width="24"
+									Margin="16 0"
+									Cursor="Help"
+									Foreground="{DynamicResource PrimaryHueMidBrush}"
+									ToolTip="{Binding Path=InfoDate}"
+									Kind="InfoCircle"/>
+
+								<TextBlock
+									Grid.Column="2"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									FontSize="16"
+									FontWeight="Medium"
+									VerticalAlignment="Center"
+									Text="{Binding Path=CurrencyNameLocalizedShort}"/>
+								<TextBlock
+									Grid.Column="3"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									FontSize="16"
+									FontWeight="Medium"
+									VerticalAlignment="Center"
+									Text="{Binding Path=CurrencyNameLocalized}"/>
+								<TextBlock
+									Grid.Column="4"
+									Foreground="{DynamicResource MaterialDesignBody}"
+									FontSize="16"
+									FontWeight="Medium"
+									VerticalAlignment="Center"
+									Text="{Binding Path=RateCross}"/>
+							</Grid>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</Grid>
+
+			<materialDesign:Snackbar
+				Margin="16"
+				MessageQueue="{Binding Messages}"/>
+
+			<mde:BusyOverlay
+				Background="{DynamicResource MaterialDesignDarkBackground}"
+				Opacity="0.85"
+				HorizontalContentAlignment="Stretch"
+				VerticalContentAlignment="Stretch"
+				IsBusy="{Binding Path=IsBusy}"
+				Style="{StaticResource MaterialBusyOverlayCircular}" />
+		</Grid>
+	</materialDesign:DialogHost>
+</UserControl>

@@ -1,0 +1,894 @@
+﻿<UserControl
+	x:Class="Monoboard.View.Auth.AuthControl"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+	xmlns:validation="clr-namespace:Monoboard.Helpers.Validation"
+	xmlns:settingsViewModels="clr-namespace:Monoboard.ViewModel.SettingsViewModels"
+	mc:Ignorable="d">
+	<UserControl.Resources>
+		<DataTemplate x:Key="ForgotPasswordViewModelTemplate" DataType="{x:Type settingsViewModels:ForgotPasswordViewModel}">
+			<materialDesign:Transitioner
+				SelectedIndex="{Binding ForgotPasswordTransitionerIndex}">
+				<Button
+					Margin="32 32 32 0"
+					Command="{Binding PasswordResetCommand}"
+					Style="{DynamicResource MaterialDesignFlatAccentButton}"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center">
+					<StackPanel Orientation="Horizontal">
+						<TextBlock
+							VerticalAlignment="Center"
+							Foreground="{DynamicResource MaterialDesignBody}"
+							Text="{DynamicResource MbPasswordReset}"/>
+						<materialDesign:PackIcon 
+							VerticalAlignment="Center"
+							Margin="8 0"
+							Foreground="{DynamicResource MaterialDesignBody}"
+							Kind="PasswordReset"/>
+					</StackPanel>
+				</Button>
+				<materialDesign:TransitionerSlide>
+					<Grid Margin="0 32 0 0">
+						<Grid.RowDefinitions>
+							<RowDefinition/>
+							<RowDefinition/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+
+						<TextBlock
+							Grid.Row="0"
+							Grid.ColumnSpan="2"
+							FontWeight="Medium"
+							FontSize="16"
+							Margin="8"
+							Text="{DynamicResource MbYourNewPassword}"/>
+
+						<TextBox
+							Grid.Row="1"
+							Grid.Column="0"
+							Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+							materialDesign:TextFieldAssist.TextFieldCornerRadius="8 0 0 8"
+							IsReadOnly="True"
+							Text="{Binding NewPassword}"/>
+
+						<Button
+							Grid.Row="1"
+							Grid.Column="1"
+							Height="50"
+							Width="50"
+							Command="{Binding CopyPasswordCommand}"
+							Style="{DynamicResource MaterialDesignFlatDarkBgButton}"
+							materialDesign:ButtonAssist.CornerRadius="0 8 8 0">
+							<Button.Content>
+								<materialDesign:PackIcon
+									HorizontalAlignment="Center"
+									VerticalAlignment="Center"
+									Height="20"
+									Width="20"
+									Kind="ContentCopy"/>
+							</Button.Content>
+						</Button>
+					</Grid>
+
+				</materialDesign:TransitionerSlide>
+			</materialDesign:Transitioner>
+		</DataTemplate>
+	</UserControl.Resources>
+
+	<materialDesign:DialogHost
+		Name="DialogHost">
+		<Grid>
+			<materialDesign:Transitioner
+				AutoApplyTransitionOrigins="True"
+				SelectionChanged="Transitioner_OnSelectionChanged"
+				Name="Transitioner"
+				Background="{DynamicResource MaterialDesignPaper}"
+				Foreground="{DynamicResource MaterialDesignBody}"
+				SelectedIndex="{Binding TransitionIndex}">
+				<materialDesign:TransitionerSlide>
+					<materialDesign:TransitionerSlide.Background>
+						<ImageBrush
+							Stretch="UniformToFill"
+							ImageSource="../../Resources/Images/BackgroundVariant1.png"/>
+					</materialDesign:TransitionerSlide.Background>
+					<StackPanel
+						VerticalAlignment="Center"
+						HorizontalAlignment="Center">
+						<Image
+							Margin="24"
+							Source="../../Resources/Images/MonoboardLogo.png"
+							Width="256"/>
+						<TextBlock
+							Margin="8"
+							FontSize="32"
+							TextAlignment="Center"
+							HorizontalAlignment="Center"
+							Text="{DynamicResource MbWelcome}"/>
+						<TextBlock
+							FontSize="24"
+							HorizontalAlignment="Center"
+							TextAlignment="Center"
+							Text="{DynamicResource MbAuthDo}"/>
+						<Button
+							Style="{DynamicResource WhiteButton}"
+							Margin="8"
+							Padding="32 8"
+							Command="{x:Static materialDesign:Transitioner.MoveNextCommand}"
+							HorizontalAlignment="Center"
+							Content="{DynamicResource MbNext}">
+						</Button>
+					</StackPanel>
+				</materialDesign:TransitionerSlide>
+
+				<materialDesign:TransitionerSlide>
+					<materialDesign:TransitionerSlide.Background>
+						<ImageBrush
+							Stretch="UniformToFill"
+							ImageSource="../../Resources/Images/BackgroundVariant2.png"/>
+					</materialDesign:TransitionerSlide.Background>
+
+					<materialDesign:Card
+						UniformCornerRadius="16"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Center">
+
+						<StackPanel Margin="32 16">
+							<ListView
+								MaxHeight="250"
+								Name="UserListView"
+								ItemsSource="{Binding UserList}">
+								<ListView.Style>
+									<Style
+										TargetType="ListView"
+										BasedOn="{StaticResource {x:Type ListView}}">
+										<Style.Triggers>
+											<DataTrigger 
+												Binding="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Items.Count}"
+												Value="0">
+												<Setter Property="Template">
+													<Setter.Value>
+														<ControlTemplate>
+															<TextBlock
+																Margin="8"
+																HorizontalAlignment="Center"
+																FontSize="16"
+																FontWeight="Medium"
+																Foreground="{DynamicResource MaterialDesignBody}"
+																Text="{DynamicResource MbAccountsNotFind}"/>
+														</ControlTemplate>
+													</Setter.Value>
+												</Setter>
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</ListView.Style>
+								<ListView.ItemTemplate>
+									<DataTemplate>
+										<Grid>
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="Auto"/>
+												<ColumnDefinition Width="*"/>
+											</Grid.ColumnDefinitions>
+
+											<Border
+												Grid.Column="0"
+												Margin="2"
+												HorizontalAlignment="Center"
+												Height="44"
+												Width="44"
+												CornerRadius="22"
+												Background="{DynamicResource PrimaryHueMidBrush}">
+												<TextBlock
+													HorizontalAlignment="Center"
+													VerticalAlignment="Center"
+													FontSize="20"
+													FontWeight="Medium"
+													Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+													Text="{Binding NameShort}"/>
+											</Border>
+
+											<TextBlock
+												Grid.Column="1"
+												Margin="24 0 16 0"
+												Foreground="{DynamicResource PrimaryHueMidBrush}"
+												FontSize="16"
+												FontWeight="Medium"
+												VerticalAlignment="Center"
+												Text="{Binding Name}"/>
+										</Grid>
+									</DataTemplate>
+								</ListView.ItemTemplate>
+
+								<b:Interaction.Triggers>
+									<b:EventTrigger EventName="SelectionChanged">
+										<b:InvokeCommandAction
+											Command="{Binding SelectUserCommand}"
+											CommandParameter="{Binding ElementName=UserListView, Path=SelectedIndex}"/>
+									</b:EventTrigger>
+								</b:Interaction.Triggers>
+							</ListView>
+
+							<Button
+								Style="{DynamicResource MaterialDesignFlatButton}"
+								Margin="8"
+								Visibility="{Binding ApplyUserVisibility}"
+								HorizontalAlignment="Center"
+								Content="{Binding ContinueAsUser}"
+								Command="{Binding NextUserCommand}"
+								CommandParameter="{Binding ElementName=UserListView, Path=SelectedIndex}"
+								Cursor="Hand">
+							</Button>
+
+							<Button
+								Style="{DynamicResource MaterialDesignFlatAccentButton}"
+								Margin="8"
+								HorizontalAlignment="Center"
+								Content="{DynamicResource MbCreateNewAccounts}"
+								Command="{x:Static materialDesign:Transitioner.MoveNextCommand}"/>
+						</StackPanel>
+
+					</materialDesign:Card>
+
+				</materialDesign:TransitionerSlide>
+
+				<materialDesign:TransitionerSlide
+					BackwardWipe="{DynamicResource CircleWipe}"
+					ForwardWipe="{DynamicResource CircleWipe}"
+					OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
+
+					<Grid>
+						<Grid.Background>
+							<ImageBrush
+								Stretch="UniformToFill"
+								ImageSource="../../Resources/Images/BackgroundVariant2.png"/>
+						</Grid.Background>
+
+						<DockPanel>
+							<materialDesign:Transitioner
+								Name="LoginTransitioner"
+								DockPanel.Dock="Left"
+								SelectedIndex="0">
+								<materialDesign:TransitionerSlide>
+									<StackPanel
+										VerticalAlignment="Center">
+
+										<TextBlock
+											FontSize="32"
+											HorizontalAlignment="Center"
+											Text="{DynamicResource MbTitle}"/>
+
+										<TextBox
+											Name="MonobankApiKey"
+											HorizontalAlignment="Center"
+											VerticalAlignment="Center"
+											Margin="16"
+											Width="320"
+											materialDesign:TextFieldAssist.HasClearButton="True"
+											materialDesign:ValidationAssist.Background="Transparent"
+											materialDesign:ValidationAssist.UsePopup="True"
+											materialDesign:ValidationAssist.PopupPlacement="Bottom"
+											materialDesign:ValidationAssist.OnlyShowOnFocus="True"
+											materialDesign:HintAssist.Hint="{DynamicResource MbEnterApiKey}"
+											materialDesign:HintAssist.Background="{DynamicResource MaterialDesignLightBackground}"
+											materialDesign:HintAssist.FloatingScale="1.05"
+											Background="{DynamicResource MaterialDesignLightBackground}"
+											Style="{DynamicResource MaterialDesignOutlinedTextBox}">
+											<Binding
+												Path="Text"
+												Mode="OneWay"
+												UpdateSourceTrigger="PropertyChanged"
+												NotifyOnValidationError="True"
+												ElementName="MonobankApiKey">
+												<Binding.ValidationRules>
+													<validation:MonobankApiValidation
+														ValidatesOnTargetUpdated="True"/>
+												</Binding.ValidationRules>
+											</Binding>
+										</TextBox>
+
+										<TextBlock
+											FontSize="16"
+											HorizontalAlignment="Center"
+											Foreground="{DynamicResource ErrorColorBrush}"
+											Text="{DynamicResource MbWarningData}"/>
+
+										<StackPanel
+											HorizontalAlignment="Center"
+											Orientation="Horizontal">
+											<Button
+												Style="{DynamicResource WhiteButton}"
+												Margin="8"
+												Click="TransitionerBackToUser_OnClick">
+												<Button.Content>
+													<StackPanel Orientation="Horizontal">
+														<materialDesign:PackIcon Kind="ArrowLeft"/>
+														<TextBlock
+															VerticalAlignment="Center"
+															Text="{DynamicResource MbBack}"
+															Margin="8 0"/>
+													</StackPanel>
+												</Button.Content>
+											</Button>
+											<Button
+												Command="{Binding SaveMonobankApiCommand}"
+												CommandParameter="{Binding ElementName=MonobankApiKey, Path=Text}"
+												Padding="8" Cursor="Hand">
+												<Button.Content>
+													<StackPanel Orientation="Horizontal">
+														<TextBlock
+															VerticalAlignment="Center"
+															Text="{DynamicResource MbSave}"
+															Margin="0 0 8 0"/>
+														<materialDesign:PackIcon Kind="ContentSave"/>
+													</StackPanel>
+												</Button.Content>
+												<Button.Style>
+													<Style
+														TargetType="Button"
+														BasedOn="{StaticResource WhiteButton}">
+														<Style.Triggers>
+															<DataTrigger
+																Binding="{Binding Path=(Validation.HasError), ElementName=MonobankApiKey}"
+																Value="True">
+																<Setter
+																Property="IsEnabled"
+																Value="False" />
+															</DataTrigger>
+														</Style.Triggers>
+													</Style>
+												</Button.Style>
+											</Button>
+										</StackPanel>
+									</StackPanel>
+								</materialDesign:TransitionerSlide>
+								<materialDesign:TransitionerSlide>
+									<StackPanel
+										VerticalAlignment="Center">
+
+										<TextBlock
+											FontSize="32"
+											HorizontalAlignment="Center"
+											Text="{DynamicResource MbForgotPassword}"/>
+
+										<TextBox
+											Name="ForgotPasswordCheckMonobankApiKey"
+											HorizontalAlignment="Center"
+											VerticalAlignment="Center"
+											Margin="16"
+											Width="320"
+											materialDesign:TextFieldAssist.HasClearButton="True"
+											materialDesign:ValidationAssist.Background="Transparent"
+											materialDesign:ValidationAssist.UsePopup="True"
+											materialDesign:ValidationAssist.PopupPlacement="Bottom"
+											materialDesign:ValidationAssist.OnlyShowOnFocus="True"
+											materialDesign:HintAssist.Hint="{DynamicResource MbEnterApiKey}"
+											materialDesign:HintAssist.Background="{DynamicResource MaterialDesignLightBackground}"
+											materialDesign:HintAssist.FloatingScale="1.05"
+											Background="{DynamicResource MaterialDesignLightBackground}"
+											Style="{DynamicResource MaterialDesignOutlinedTextBox}">
+											<Binding
+												Path="Text"
+												Mode="OneWay"
+												UpdateSourceTrigger="PropertyChanged"
+												NotifyOnValidationError="True"
+												ElementName="ForgotPasswordCheckMonobankApiKey">
+												<Binding.ValidationRules>
+													<validation:MonobankApiValidation
+														ValidatesOnTargetUpdated="True"/>
+												</Binding.ValidationRules>
+											</Binding>
+										</TextBox>
+
+										<TextBlock
+											FontSize="16"
+											HorizontalAlignment="Center"
+											Foreground="{DynamicResource ErrorColorBrush}"
+											Text="{DynamicResource MbWarningData}"/>
+
+										<StackPanel
+											HorizontalAlignment="Center"
+											Orientation="Horizontal">
+											<Button
+												Style="{DynamicResource WhiteButton}"
+												Margin="8"
+												Click="TransitionerBackToUser_OnClick">
+												<Button.Content>
+													<StackPanel Orientation="Horizontal">
+														<materialDesign:PackIcon Kind="ArrowLeft"/>
+														<TextBlock
+															VerticalAlignment="Center"
+															Text="{DynamicResource MbBack}"
+															Margin="8 0"/>
+													</StackPanel>
+												</Button.Content>
+											</Button>
+											<Button
+												Click="ForgotPassword_OnClick"
+												Padding="8">
+												<Button.Content>
+													<StackPanel Orientation="Horizontal">
+														<TextBlock
+															VerticalAlignment="Center"
+															Text="{DynamicResource MbPasswordReset}"
+															Margin="0 0 8 0"/>
+														<materialDesign:PackIcon
+															Kind="PasswordReset"/>
+													</StackPanel>
+												</Button.Content>
+												<Button.Style>
+													<Style
+														TargetType="Button"
+														BasedOn="{StaticResource WhiteButton}">
+														<Style.Triggers>
+															<DataTrigger
+																Binding="{Binding Path=(Validation.HasError), ElementName=ForgotPasswordCheckMonobankApiKey}"
+																Value="True">
+																<Setter
+																Property="IsEnabled"
+																Value="False" />
+															</DataTrigger>
+														</Style.Triggers>
+													</Style>
+												</Button.Style>
+											</Button>
+										</StackPanel>
+									</StackPanel>
+								</materialDesign:TransitionerSlide>
+							</materialDesign:Transitioner>
+
+							<wpf:WebView2
+								SizeChanged="WebControl_OnSizeChanged"
+								Name="WebControl"
+								NavigationStarting="WebControl_OnNavigationStarting"
+								CoreWebView2Ready="WebControl_OnCoreWebView2Ready"
+								Source="https://api.monobank.ua/"/>
+						</DockPanel>
+
+					</Grid>
+
+				</materialDesign:TransitionerSlide>
+
+				<materialDesign:TransitionerSlide
+					BackwardWipe="{DynamicResource CircleWipe}"
+					ForwardWipe="{DynamicResource CircleWipe}"
+					OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
+					<materialDesign:TransitionerSlide.Background>
+						<ImageBrush
+							Stretch="UniformToFill"
+							ImageSource="../../Resources/Images/BackgroundVariant1.png"/>
+					</materialDesign:TransitionerSlide.Background>
+					<materialDesign:Card
+						UniformCornerRadius="16"
+						Padding="32"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center">
+
+						<StackPanel Margin="8">
+
+							<TextBlock
+								FontWeight="Medium"
+								FontSize="20"
+								HorizontalAlignment="Center"
+								Text="{DynamicResource MbPassword}"/>
+
+							<Grid>
+								<PasswordBox
+									Name="PasswordBox"
+									Margin="8"
+									PasswordChanged="PasswordBox_PasswordChanged"
+									Style="{StaticResource MaterialDesignFilledPasswordBox}"
+									ToolTip="{DynamicResource MbPasswordRegEx}"
+									materialDesign:HintAssist.Hint="{DynamicResource MbPassword}">
+								</PasswordBox>
+
+								<TextBox
+									Name="ShowPasswordBox"
+									Margin="8"
+									TextChanged="ShowPasswordBox_OnTextChanged"
+									Visibility="Collapsed"
+									Style="{DynamicResource MaterialDesignFilledTextBox}"
+									ToolTip="{DynamicResource MbPasswordRegEx}"
+									materialDesign:HintAssist.Hint="{DynamicResource MbPassword}"/>
+
+								<ToggleButton
+									Name="ShowPasswordToggleButton"
+									Click="ShowPassword_OnClick"
+									Margin="0 0 8 0"
+									IsTabStop="False"
+									HorizontalAlignment="Right"
+									Style="{StaticResource MaterialDesignActionToggleButton}"
+									Background="Transparent"
+									Foreground="{DynamicResource PrimaryHueMidBrush}"
+									ToolTip="{DynamicResource MbShowHidePassord}"
+									Content="{materialDesign:PackIcon Kind=Password}"
+									materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=Show}" />
+							</Grid>
+
+							<TextBlock
+								Name="PasswordValidateBlock"
+								Margin="5"
+								FontSize="14"
+								FontWeight="Medium"
+								Foreground="{DynamicResource ProhibitoryHueBrush}"
+								HorizontalAlignment="Center"
+								Text="{Binding PasswordValidate}"/>
+
+							<Grid>
+								<PasswordBox
+									Name="ConfirmPasswordBox"
+									Margin="8"
+									PasswordChanged="ConfirmPasswordBox_PasswordChanged"
+									Style="{StaticResource MaterialDesignFilledPasswordBox}"
+									materialDesign:HintAssist.Hint="{DynamicResource MbConfirmPassword}"
+									ToolTip="{DynamicResource MbPasswordRegEx}"
+									materialDesign:HintAssist.IsFloating="True"
+									Cursor="IBeam" />
+
+								<TextBox
+									Name="ShowConfirmPasswordBox"
+									Margin="8"
+									TextChanged="ShowConfirmPasswordBox_OnTextChanged"
+									Visibility="Collapsed"
+									Style="{DynamicResource MaterialDesignFilledTextBox}"
+									ToolTip="{DynamicResource MbPasswordRegEx}"
+									materialDesign:HintAssist.Hint="{DynamicResource MbConfirmPassword}" Cursor="IBeam"/>
+
+								<ToggleButton
+									Name="ShowConfirmPasswordToggleButton"
+									Click="ShowConfirmPassword_OnClick"
+									Margin="0 0 8 0"
+									IsTabStop="False"
+									HorizontalAlignment="Right"
+									Style="{StaticResource MaterialDesignActionToggleButton}"
+									Background="Transparent"
+									Foreground="{DynamicResource PrimaryHueMidBrush}"
+									ToolTip="{DynamicResource MbShowHidePassord}"
+									Content="{materialDesign:PackIcon Kind=Password}"
+									materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=Show}" />
+							</Grid>
+
+							<TextBlock
+								Name="ConfirmPasswordValidateBlock"
+								Margin="5"
+								FontSize="14"
+								FontWeight="Medium"
+								Foreground="{DynamicResource ProhibitoryHueBrush}"
+								HorizontalAlignment="Center"
+								Text="{Binding ConfirmPasswordValidate}"/>
+
+							<Grid
+								Margin="8">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition/>
+									<ColumnDefinition/>
+								</Grid.ColumnDefinitions>
+								<Button
+									Grid.Column="0"
+									Click="Back_OnClick"
+									HorizontalAlignment="Left"
+									Style="{DynamicResource MaterialDesignFlatButton}"
+									Margin="8">
+									<StackPanel Orientation="Horizontal">
+										<materialDesign:PackIcon  Kind="ArrowBack"/>
+										<TextBlock
+											Margin="8 0"
+											Text="{DynamicResource MbBack}"/>
+									</StackPanel>
+								</Button>
+
+								<Button
+									Grid.Column="1"
+									IsEnabled="{Binding IsPasswordCorrect}"
+									HorizontalAlignment="Right"
+									Style="{DynamicResource MaterialDesignFlatButton}"
+									Margin="8"
+									Command="{Binding AddNewUserCommand}"
+									CommandParameter="{Binding ElementName=PasswordBox}">
+									<StackPanel Orientation="Horizontal">
+										<TextBlock
+											Margin="8 0"
+											Text="{DynamicResource MbEndRegister}"/>
+										<materialDesign:PackIcon Kind="AccountPlus"/>
+									</StackPanel>
+								</Button>
+							</Grid>
+						</StackPanel>
+
+					</materialDesign:Card>
+				</materialDesign:TransitionerSlide>
+
+				<materialDesign:TransitionerSlide
+					BackwardWipe="{DynamicResource CircleWipe}"
+					ForwardWipe="{DynamicResource CircleWipe}"
+					OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
+					<materialDesign:TransitionerSlide.Background>
+						<ImageBrush
+							Stretch="UniformToFill"
+							ImageSource="../../Resources/Images/BackgroundVariant2.png"/>
+					</materialDesign:TransitionerSlide.Background>
+
+					<materialDesign:Card
+						Width="400"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center">
+						<StackPanel Margin="8">
+
+							<TextBlock
+								FontWeight="Medium"
+								FontSize="20"
+								HorizontalAlignment="Center"
+								Text="{DynamicResource MbPassword}"/>
+
+							<Grid>
+								<PasswordBox
+								Name="LoginPasswordBox"
+								Margin="8"
+								PasswordChanged="LoginPasswordBox_PasswordChanged"
+								Style="{StaticResource MaterialDesignFilledPasswordBox}"
+								ToolTip="{DynamicResource MbPasswordRegEx}"
+								materialDesign:HintAssist.Hint="{DynamicResource MbLoginPassword}">
+								</PasswordBox>
+
+								<TextBox
+									Name="ShowLoginPasswordBox"
+									Margin="8"
+									TextChanged="ShowLoginPasswordBox_OnTextChanged"
+									Visibility="Collapsed"
+									Style="{DynamicResource MaterialDesignFilledTextBox}"
+									ToolTip="{DynamicResource MbPasswordRegEx}"
+									materialDesign:HintAssist.Hint="{DynamicResource MbLoginPassword}" Cursor="IBeam"/>
+
+								<ToggleButton
+									Name="ShowLoginPasswordToggleButton"
+									Click="ShowLoginPassword_OnClick"
+									Margin="0 0 8 0"
+									IsTabStop="False"
+									HorizontalAlignment="Right"
+									Style="{StaticResource MaterialDesignActionToggleButton}"
+									Background="Transparent"
+									Foreground="{DynamicResource PrimaryHueMidBrush}"
+									ToolTip="{DynamicResource MbShowHidePassord}"
+									Content="{materialDesign:PackIcon Kind=Password}"
+									materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=Show}" />
+							</Grid>
+
+							<TextBlock
+								Name="LoginValidateBlock"
+								Margin="5"
+								FontSize="14"
+								FontWeight="Medium"
+								Foreground="{DynamicResource ProhibitoryHueBrush}"
+								HorizontalAlignment="Center"
+								Visibility="{Binding IsLoginValidateBlockVisible, Mode=TwoWay}"
+								Text="{Binding LoginValidate}"/>
+
+							<Grid
+								Margin="8">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition/>
+									<ColumnDefinition/>
+									<ColumnDefinition/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition/>
+									<RowDefinition/>
+								</Grid.RowDefinitions>
+								<Button
+									Grid.Column="0"
+									Click="TransitionerBackToUser_OnClick"
+									Style="{DynamicResource MaterialDesignFlatButton}"
+									Margin="8">
+									<StackPanel Orientation="Horizontal">
+										<materialDesign:PackIcon
+											VerticalAlignment="Center"
+											Kind="ArrowBack"/>
+										<TextBlock
+											Margin="8 0"
+											Text="{DynamicResource MbBack}"/>
+									</StackPanel>
+								</Button>
+
+								<Button
+									Grid.Row="1"
+									Grid.Column="0"
+									Grid.ColumnSpan="3"
+									Click="ToForgotPassword_OnClick"
+									Style="{DynamicResource MaterialDesignFlatButton}"
+									Margin="8">
+									<StackPanel Orientation="Horizontal">
+										<TextBlock
+											Margin="8 0"
+											Text="{DynamicResource MbForgotPassword}"/>
+
+										<materialDesign:PackIcon
+											VerticalAlignment="Center"
+											Kind="ForgotPassword"/>
+									</StackPanel>
+								</Button>
+
+								<Button
+									Grid.Row="0"
+									Grid.Column="2"
+									IsEnabled="{Binding IsLoginPasswordCorrect}"
+									Style="{DynamicResource MaterialDesignFlatButton}"
+									Margin="8"
+									Command="{Binding LoginCommand}"
+									CommandParameter="{Binding ElementName=LoginPasswordBox}">
+									<StackPanel Orientation="Horizontal">
+										<TextBlock
+											Margin="8 0"
+											Text="{DynamicResource MbLogin}"/>
+										<materialDesign:PackIcon
+											VerticalAlignment="Center"
+											Kind="Login"/>
+									</StackPanel>
+								</Button>
+							</Grid>
+						</StackPanel>
+					</materialDesign:Card>
+				</materialDesign:TransitionerSlide>
+
+				<materialDesign:TransitionerSlide
+					BackwardWipe="{DynamicResource CircleWipe}"
+					ForwardWipe="{DynamicResource CircleWipe}"
+					OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
+					<materialDesign:TransitionerSlide.Background>
+						<ImageBrush
+							Stretch="UniformToFill"
+							ImageSource="../../Resources/Images/BackgroundVariant1.png"/>
+					</materialDesign:TransitionerSlide.Background>
+					<materialDesign:Transitioner
+						Name="RegisterTransitioner"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						SelectedIndex="{Binding RegisterTransitionerIndex}">
+						<materialDesign:TransitionerSlide>
+							<StackPanel
+								VerticalAlignment="Center"
+								HorizontalAlignment="Center">
+
+								<TextBlock
+									Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+									FontSize="24"
+									FontWeight="Medium"
+									Margin="0 0 0 16"
+									Text="{DynamicResource MbRegisteringInfo}"/>
+
+								<ProgressBar
+									Height="64"
+									Width="64"
+									Style="{StaticResource MaterialDesignCircularProgressBar}"
+									Value="0"
+									IsIndeterminate="True" />
+
+							</StackPanel>
+						</materialDesign:TransitionerSlide>
+						<materialDesign:TransitionerSlide>
+							<StackPanel
+								VerticalAlignment="Center"
+								Margin="32">
+
+								<materialDesign:Card
+									Background="{DynamicResource AllowingHueBrush}"
+									UniformCornerRadius="8">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="Auto"/>
+										</Grid.ColumnDefinitions>
+
+										<TextBlock
+											Grid.Column="0"
+											Padding="16 0"
+											Foreground="{DynamicResource AllowingHueForegroundBrush}"
+											FontSize="32"
+											FontWeight="Medium"
+											VerticalAlignment="Center"
+											HorizontalAlignment="Center"
+											Text="{DynamicResource MbRegisteredSuccess}"/>
+
+										<Grid
+											Grid.Column="1"
+											Background="{DynamicResource MaterialDesignPaper}">
+											<materialDesign:PackIcon
+												Background="{DynamicResource MaterialDesignPaper}"
+												Foreground="{DynamicResource PrimaryHueMidBrush}"
+												HorizontalAlignment="Center"
+												VerticalAlignment="Center"
+												Margin="16"
+												Padding="16"
+												Width="40"
+												Height="40"
+												Kind="HowToReg"/>
+										</Grid>
+									</Grid>
+								</materialDesign:Card>
+
+								<Button
+									Style="{DynamicResource WhiteButton}"
+									Height="40"
+									Width="256"
+									Margin="0 64 0 0"
+									Click="Success_OnClick">
+									<StackPanel Orientation="Horizontal">
+										<TextBlock
+										Margin="8 0"
+										Text="{DynamicResource MbGetStarted}"/>
+										<materialDesign:PackIcon Kind="Approve"/>
+									</StackPanel>
+								</Button>
+							</StackPanel>
+						</materialDesign:TransitionerSlide>
+						<materialDesign:TransitionerSlide>
+							<StackPanel
+								VerticalAlignment="Center"
+								Margin="32">
+								<materialDesign:Card
+									Background="{DynamicResource ProhibitoryHueBrush}"
+									UniformCornerRadius="8">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="Auto"/>
+										</Grid.ColumnDefinitions>
+
+										<TextBlock
+											Grid.Column="0"
+											Padding="16 0"
+											Foreground="{DynamicResource ProhibitoryHueForegroundBrush}"
+											FontSize="32"
+											FontWeight="Medium"
+											VerticalAlignment="Center"
+											HorizontalAlignment="Center"
+											Text="{DynamicResource MbRegisteredError}"/>
+										<Grid
+											Grid.Column="1"
+											Background="{DynamicResource MaterialDesignPaper}">
+											<materialDesign:PackIcon
+												Background="{DynamicResource MaterialDesignPaper}"
+												Foreground="{DynamicResource PrimaryHueMidBrush}"
+												HorizontalAlignment="Center"
+												VerticalAlignment="Center"
+												Margin="16"
+												Padding="16"
+												Width="40"
+												Height="40"
+												Kind="Error"/>
+										</Grid>
+									</Grid>
+								</materialDesign:Card>
+
+								<Button
+									Style="{DynamicResource WhiteButton}"
+									Height="40"
+									Width="256"
+									Margin="0 64 0 0"
+									Click="Error_OnClick">
+									<StackPanel Orientation="Horizontal">
+										<materialDesign:PackIcon
+											VerticalAlignment="Center"
+											Kind="StepBackward"/>
+										<TextBlock
+											Margin="8 0"
+											Text="{DynamicResource MbBack}"/>
+									</StackPanel>
+								</Button>
+							</StackPanel>
+						</materialDesign:TransitionerSlide>
+					</materialDesign:Transitioner>
+				</materialDesign:TransitionerSlide>
+			</materialDesign:Transitioner>
+
+			<materialDesign:Snackbar
+				MessageQueue="{Binding Messages}"/>
+		</Grid>
+	</materialDesign:DialogHost>
+</UserControl>

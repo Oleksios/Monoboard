@@ -1,0 +1,292 @@
+﻿<mde:MaterialWindow
+	x:Class="Monoboard.View.MainWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:mde="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
+	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+	xmlns:viewModel="clr-namespace:Monoboard.ViewModel"
+	xmlns:settingsViewModels="clr-namespace:Monoboard.ViewModel.SettingsViewModels"
+	xmlns:view="clr-namespace:Monoboard.View.Content"
+	xmlns:settings="clr-namespace:Monoboard.View.Settings"
+	xmlns:exchangeRatesViewModels="clr-namespace:Monoboard.ViewModel.ExchangeRatesViewModels"
+	xmlns:statementItemsViewModels="clr-namespace:Monoboard.ViewModel.StatementItemsViewModels"
+	mc:Ignorable="d"
+	Title="Monoboard"
+	WindowStartupLocation="CenterScreen"
+	MinHeight="800"
+	MinWidth="1200"
+	BorderBackgroundBrush="{DynamicResource MaterialDesignPaper}"
+	BorderForegroundBrush="{DynamicResource MaterialDesignBody}"
+	Background="{DynamicResource MaterialDesignPaper}"
+	Foreground="{DynamicResource MaterialDesignBody}"
+	FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
+	<Window.Resources>
+		<DataTemplate DataType="{x:Type viewModel:MainWindowHelperViewModel}">
+			<view:MainWindowHelperControl />
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type viewModel:DashboardViewModel}">
+			<view:DashboardControl />
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type exchangeRatesViewModels:ExchangesViewModel}">
+			<view:ExchangesControl />
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type statementItemsViewModels:StatementItemsViewModel}">
+			<view:StatementsControl />
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type viewModel:PartnershipViewModel}">
+			<view:PartnershipControl />
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type settingsViewModels:SettingsViewModel}">
+			<settings:SettingsControl />
+		</DataTemplate>
+	</Window.Resources>
+	<mde:MaterialWindow.TitleTemplate>
+		<DataTemplate>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="100*" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+
+				<TextBlock
+					Foreground="{DynamicResource MaterialDesignBody}"
+					Style="{StaticResource WindowTitleTextBlockStyle}"
+					Text="{Binding Path=Title,
+						RelativeSource={RelativeSource AncestorType={x:Type mde:MaterialWindow}}}"
+					Margin="8,0,0,0" />
+
+				<StackPanel
+					Grid.Column="1"
+					Orientation="Horizontal"
+					VerticalAlignment="Stretch">
+					<Button
+						Foreground="{DynamicResource MaterialDesignBody}"
+						Click="GoToGitHubButtonClickHandler"
+						Style="{StaticResource WindowButtonStyle}">
+						<materialDesign:PackIcon
+							Style="{StaticResource WindowButtonIconStyle}"
+							Kind="Github" />
+					</Button>
+					<Button
+						Foreground="{DynamicResource MaterialDesignBody}"
+						Click="GoToAppHelperClickHandler"
+						Style="{StaticResource WindowButtonStyle}">
+						<materialDesign:PackIcon
+							Style="{StaticResource WindowButtonIconStyle}"
+							Kind="HelpCircle" />
+					</Button>
+					<Border
+						Width="1"
+						VerticalAlignment="Stretch"
+						SnapsToDevicePixels="True"
+						Margin="8 4"
+						Background="{Binding Path=BorderForegroundBrush,
+							RelativeSource={RelativeSource AncestorType={x:Type mde:MaterialWindow}}}" />
+				</StackPanel>
+			</Grid>
+		</DataTemplate>
+	</mde:MaterialWindow.TitleTemplate>
+
+	<materialDesign:DialogHost
+		Identifier="MainDialogHost"
+		Name="MainDialogHost">
+		<materialDesign:Transitioner
+			Name="MainTransitioner"
+			SelectedIndex="0"
+			AutoApplyTransitionOrigins="True">
+			<materialDesign:DrawerHost
+				Name="MainHost"
+				DockPanel.Dock="Left">
+				<materialDesign:DrawerHost.LeftDrawerContent>
+					<StackPanel
+						Background="{DynamicResource MaterialDesignPaper}">
+						<ToggleButton
+							HorizontalContentAlignment="Stretch"
+							Width="280"
+							Margin="16"
+							IsChecked="{Binding ElementName=MainHost, Path=IsLeftDrawerOpen}"
+							Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
+							Style="{DynamicResource MaterialDesignHamburgerToggleButton}"
+							Cursor="Hand"/>
+						<mde:SideNavigation
+							LabelForeground="{DynamicResource MaterialDesignBody}"
+							IconForeground="{DynamicResource MaterialDesignBody}"
+							Style="{DynamicResource MaterialSideNavigationSemicircle}"
+							x:Name="NavigationDrawerNav"
+							Margin="0 0 16 0"
+							Items="{Binding Path=NavigationItems, Mode=OneTime}"
+							NavigationItemSelected="NavigationItemSelectedHandler"/>
+					</StackPanel>
+				</materialDesign:DrawerHost.LeftDrawerContent>
+				<DockPanel>
+					<materialDesign:ColorZone
+						Background="{DynamicResource MaterialDesignPaper}"
+						Foreground="{DynamicResource MaterialDesignBody}"
+						Height="70"
+						DockPanel.Dock="Top"
+						Mode="PrimaryMid">
+						<Grid>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition/>
+								<ColumnDefinition/>
+								<ColumnDefinition/>
+							</Grid.ColumnDefinitions>
+							<StackPanel
+								Grid.Column="0"
+								Margin="16 0 0 0"
+								Orientation="Horizontal">
+								<ToggleButton
+									IsChecked="{Binding ElementName=MainHost, Path=IsLeftDrawerOpen}"
+									Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
+									CommandParameter="{x:Static Dock.Left}"
+									Style="{DynamicResource MaterialDesignHamburgerToggleButton}"
+									Cursor="Hand"/>
+
+								<ItemsControl
+									Margin="32 0 0 0">
+									<ItemsControl.Style>
+										<Style TargetType="ItemsControl">
+											<Style.Triggers>
+												<Trigger
+													Property="IsMouseOver"
+													Value="False">
+													<Setter Property="Template">
+														<Setter.Value>
+															<ControlTemplate>
+																<StackPanel
+																	Background="Transparent"
+																	Name="UserNamePanel"
+																	Orientation="Horizontal"
+																	VerticalAlignment="Center">
+																	<Border
+																		Height="32"
+																		Width="32"
+																		CornerRadius="32"
+																		Background="{DynamicResource PrimaryHueMidBrush}">
+																		<TextBlock
+																			HorizontalAlignment="Center"
+																			VerticalAlignment="Center"
+																			FontWeight="Medium"
+																			Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+																			FontSize="14"
+																			Style="{DynamicResource MaterialDesignTextBlock}"
+																			Text="{Binding UserNameShort}"/>
+																	</Border>
+
+																	<TextBlock
+																		Margin="16 0 0 0"
+																		VerticalAlignment="Center"
+																		FontWeight="Medium"
+																		FontSize="16"
+																		Text="{Binding UserName}"/>
+																</StackPanel>
+															</ControlTemplate>
+														</Setter.Value>
+													</Setter>
+												</Trigger>
+												<Trigger
+													Property="IsMouseOver"
+													Value="True">
+													<Setter Property="Template">
+														<Setter.Value>
+															<ControlTemplate>
+																<Grid
+																	HorizontalAlignment="Left"
+																	Background="Transparent">
+																	<Button
+																		Height="50"
+																		Width="50"
+																		Padding="0"
+																		HorizontalAlignment="Left"
+																		Style="{DynamicResource WhiteButton}"
+																		Foreground="Black"
+																		Command="{Binding GetQrCodeCommand}"
+																		CommandParameter="{Binding ElementName=MainDialogHost, Path=Identifier}"
+																		Content="{materialDesign:PackIcon Qrcode, Size=32}"
+																		materialDesign:ButtonAssist.CornerRadius="25">
+																	</Button>
+
+																	<TextBlock
+																		Margin="64 0 0 0"
+																		VerticalAlignment="Center"
+																		FontWeight="Medium"
+																		FontSize="16"
+																		Text="{DynamicResource MbQrCodeRefill}"/>
+																</Grid>
+															</ControlTemplate>
+														</Setter.Value>
+													</Setter>
+												</Trigger>
+											</Style.Triggers>
+										</Style>
+									</ItemsControl.Style>
+								</ItemsControl>
+							</StackPanel>
+
+							<TextBlock
+								Name="TitleBlock"
+								Grid.Column="1"
+								HorizontalAlignment="Center"
+								VerticalAlignment="Center"
+								FontWeight="Medium"
+								FontSize="24"/>
+
+							<StackPanel
+								Grid.Column="2"
+								HorizontalAlignment="Right"
+								Orientation="Horizontal">
+								<ComboBox
+									Name="SelectLanguage"
+									FontSize="16"
+									Margin="16"
+									HorizontalAlignment="Left"
+									VerticalAlignment="Center"
+									SelectionChanged="SelectLanguage_OnSelectionChanged"
+									Cursor="Hand">
+									<ComboBoxItem Content="{DynamicResource MbUkrLanguage}"/>
+									<ComboBoxItem Content="{DynamicResource MbEngLanguage}"/>
+									<ComboBoxItem Content="{DynamicResource MbRusLanguage}"/>
+								</ComboBox>
+
+								<Button
+									Margin="16 0 0 0"
+									Height="50"
+									Padding="32 0"
+									materialDesign:ButtonAssist.CornerRadius="25 0 0 25"
+									Click="ExitApp_OnClick"
+									Style="{DynamicResource MaterialDesignFlatDarkBgButton}"
+									Content="{DynamicResource MbExitApp}"/>
+							</StackPanel>
+						</Grid>
+					</materialDesign:ColorZone>
+					<DockPanel Background="{DynamicResource MaterialDesignPaper}">
+						<mde:NavigationRail
+							x:Name="SideNav"
+							DockPanel.Dock="Left"
+							Background="{DynamicResource MaterialDesignPaper}"
+							LabelForeground="{DynamicResource MaterialDesignBody}"
+							IconForeground="{DynamicResource MaterialDesignBody}"
+							Items="{Binding Path=NavigationItems, Mode=OneTime}"
+							NavigationItemSelected="NavigationItemSelectedHandler" />
+
+						<Grid
+							DockPanel.Dock="Right">
+							<mde:TransitionContentControl
+								x:Name="ContentControl"
+								HorizontalAlignment="Stretch"
+								VerticalAlignment="Stretch" />
+
+							<materialDesign:Snackbar
+								Margin="16"
+								Name="MainWindowSnackbar"
+								MessageQueue="{materialDesign:MessageQueue}"/>
+						</Grid>
+					</DockPanel>
+				</DockPanel>
+			</materialDesign:DrawerHost>
+			<view:MainWindowHelperControl/>
+		</materialDesign:Transitioner>
+	</materialDesign:DialogHost>
+</mde:MaterialWindow>

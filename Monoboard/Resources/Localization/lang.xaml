@@ -1,0 +1,226 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:system="clr-namespace:System;assembly=System.Runtime"
+	xml:space="preserve">
+	
+	<!-- Languages -->
+	<system:String x:Key="MbUkrLanguage">Українська мова</system:String>
+	<system:String x:Key="MbEngLanguage">Англійська мова</system:String>
+	<system:String x:Key="MbRusLanguage">Російська мова</system:String>
+
+	<!-- Passwords -->
+	<system:String x:Key="MbPassword">Пароль</system:String>
+	<system:String x:Key="MbCurrentPassword">Теперішній пароль</system:String>
+	<system:String x:Key="MbNewPassword">Новий пароль</system:String>
+	<system:String x:Key="MbConfirmPassword">Підтвердіть пароль</system:String>
+	<system:String x:Key="MbLoginPassword">Введіть пароль для входу</system:String>
+	<system:String x:Key="MbShowHidePassord">Показати/сховати пароль</system:String>
+	<system:String x:Key="MbPasswordSuccess">Відповідає всім вимогам!</system:String>
+	<system:String x:Key="MbPasswordError">Паролі не співпадають!</system:String>
+	<system:String x:Key="MbPasswordErrorAlt">Ви ввели невірний пароль!</system:String>
+	<system:String x:Key="MbPasswordEmpty">Поле паролю не може бути пустим!</system:String>
+	<system:String x:Key="MbPasswordRegEx">Пароль повинен складатися з:&#x0a;- тільки латиниці;&#x0a;- цифри;&#x0a;- символа верхнього регістру;&#x0a;- символа нижнього регістру&#x0a;- спеціального символа;&#x0a;- Не менше 8 символів загалом!</system:String>
+	<system:String x:Key="MbPasswordNeed">Пароль не відповідає вимогам!</system:String>
+	<system:String x:Key="MbPasswordSetSuccessfully">Пароль встановлено!</system:String>
+	<system:String x:Key="MbPasswordChangeSuccessfully">Пароль змінено!</system:String>
+	<system:String x:Key="MbPasswordSetError">Виникла помилка! Спробуйте знову</system:String>
+	<system:String x:Key="MbNotAllowedIdenticalPasswords">Ви не можете встановити один і той же пароль!</system:String>
+	<system:String x:Key="MbIsSetPassword">Встановити пароль?</system:String>
+	<system:String x:Key="MbForgotPassword">Забули пароль?</system:String>
+	<system:String x:Key="MbPasswordResetTitle">Скидання паролю</system:String>
+	<system:String x:Key="MbPasswordResetDescription">Після скидання паролю ваш старий пароль буде не дійсним.&#x0a;Бажано негайно змінити наданий пароль на свій.</system:String>
+	<system:String x:Key="MbPasswordReset">Скинути пароль</system:String>
+	<system:String x:Key="MbChangePassword">Змінити пароль</system:String>
+	<system:String x:Key="MbChangePasswordTitle">Зміна паролю</system:String>
+	<system:String x:Key="MbSetPassword">Встановити</system:String>
+	<system:String x:Key="MbSetPasswordTitle">Встановлення паролю</system:String>
+	<system:String x:Key="MbSetPasswordAlt">Встановити пароль</system:String>
+	<system:String x:Key="MbNotSetPassword">Не встановлювати</system:String>
+	<system:String x:Key="MbSetPasswordInfoMessages">Встановлення паролю захистить ваш&#x0a;обліковий запис від втручання інших осіб.</system:String>
+	<system:String x:Key="MbYourNewPassword">Ваш новий пароль</system:String>
+
+	<!-- Cards type -->
+	<system:String x:Key="MbBlackCard">Чорна</system:String>
+	<system:String x:Key="MbIronCard">Залізна</system:String>
+	<system:String x:Key="MbPlatinumCard">Платинова</system:String>
+	<system:String x:Key="MbWhiteCard">Біла</system:String>
+	<system:String x:Key="MbYellowCard">Дитяча</system:String>
+	<system:String x:Key="MbFopCard">ФОП</system:String>
+	
+	<!-- Cards currency -->
+	<system:String x:Key="MbUahCard">гривнева</system:String>
+	<system:String x:Key="MbUsdCard">доларова</system:String>
+	<system:String x:Key="MbEurCard">єврова</system:String>
+	<system:String x:Key="MbPlnCard">польських злотих</system:String>
+
+	<!-- Cards description -->
+	<system:String x:Key="MbBlackCardDescription">Прості перекази, оплата комуналки, функціональна виписка, настройки карти - тепер у вашій кишені!</system:String>
+	<system:String x:Key="MbIronCardDescription">Престижна картка підкреслює статус власника. Це найвищий рівень турботи, безпеки і конфіденційності.</system:String>
+	<system:String x:Key="MbPlatinumCardDescription">Картка на ранзі Mastercard World Elite і VISA Infinite, для великих привілеїв і взагалі ніяких обмежень.</system:String>
+	<system:String x:Key="MbWhiteCardDescription">На ній немає кредитного ліміту, так що вона ідеально підходить для отримання зарплати або ФОП-виплат.</system:String>
+	<system:String x:Key="MbYellowCardDescription">Картка для клієнтів від 6 до 16 років. Включає в себе батьківський контроль, а також нову тему додатку.</system:String>
+	<system:String x:Key="MbFopCardDescription">Може бути карткою будь якого типу, різниця лише в тім, що вона призначена тільки для ФОП.</system:String>
+
+	<!-- General -->
+	<system:String x:Key="MbBack">Назад</system:String>
+	<system:String x:Key="MbClose">Закрити</system:String>
+	<system:String x:Key="MbNext">Далі</system:String>
+	<system:String x:Key="MbSave">Зберегти</system:String>
+	<system:String x:Key="MbTitle">Monobank</system:String>
+	<system:String x:Key="MbCard">картка</system:String>
+	<system:String x:Key="MbSearch">Пошук</system:String>
+
+	<!-- Palette -->
+	<system:String x:Key="MbPrimaryMidFullDescription">Основний колір - звичайний</system:String>
+	<system:String x:Key="MbPrimaryLightDescription">Світлий</system:String>
+	<system:String x:Key="MbPrimaryMidDescription">Звичайний</system:String>
+	<system:String x:Key="MbPrimaryDarkDescription">Темний</system:String>
+	<system:String x:Key="MbSecondaryDescription">Другорядний колір</system:String>
+
+	<!-- AuthWindow / AuthControl -->
+	<system:String x:Key="MbWelcome">Вітаємо вас в Monoboard!</system:String>
+	<system:String x:Key="MbAuthDo">Давайте авторизуємося</system:String>
+	<system:String x:Key="MbSelectUsersAccount">Виберіть обліковий запис</system:String>
+	<system:String x:Key="MbWrongAccount">Ми знаємо, що то не ваш обліковий запис.&#x0a;Поверніться на початкову сторінку.</system:String>
+	<system:String x:Key="MbLogin">Ввійти</system:String>
+	<system:String x:Key="MbContinueAs">Продовжити як</system:String>
+	<system:String x:Key="MbCreateNewAccounts">Створити новий обліковий запис</system:String>
+	<system:String x:Key="MbAccountsNotFind">Жодних облікових записів не виявлено!</system:String>
+	<system:String x:Key="MbWarningData">Нікому не передавайте свої дані!</system:String>
+	<system:String x:Key="MbEnterApiKey">Введіть свій API ключ</system:String>
+	<system:String x:Key="MbMonobankApiKey">Ключ API Monobank</system:String>
+	<system:String x:Key="MbEndRegister">Завершити реєстрацію</system:String>
+	<system:String x:Key="MbRegisteringInfo">Реєструємо користувача...</system:String>
+	<system:String x:Key="MbRegisteredSuccess">Реєстрація завершена!</system:String>
+	<system:String x:Key="MbRegisteredError">Виникла помилка!</system:String>
+	<system:String x:Key="MbGetStarted">Почати користування</system:String>
+
+	<!-- MainWindow -->
+	<system:String x:Key="MbSettings">Налаштування</system:String>
+	<system:String x:Key="MbDashboard">Дашборд</system:String>
+	<system:String x:Key="MbExchangeRate">Курси валют</system:String>
+	<system:String x:Key="MbHide">Сховати</system:String>
+	<system:String x:Key="MbGithub">Github</system:String>
+	<system:String x:Key="MbStatementAccount">Виписка</system:String>
+	<system:String x:Key="MbExitApp">Вихід</system:String>
+
+	<!-- QrCode -->
+	<system:String x:Key="MbAmountFundsOptional">Сума коштів (не обов'язково)</system:String>
+	<system:String x:Key="MbAmountFundsFormatTooltip">Тільки такі формати:&#x0a; - 123&#x0a; - 123.45</system:String>
+	<system:String x:Key="MbCommentOptional">Коментар (не обов'язково)</system:String>
+	<system:String x:Key="MbQrCodeGenerate">Згенерувати посилання</system:String>
+	<system:String x:Key="MbQrCodeRefill">Посилання для поповнення рахунку</system:String>
+	<system:String x:Key="MbShareLink">Поділитися посиланням</system:String>
+	<system:String x:Key="MbLinkCopied">Посилання скопійовано</system:String>
+	<system:String x:Key="MbQrCodeCopied">QR-код скопійовано</system:String>
+	<system:String x:Key="MbRefill">Поповнення рахунку</system:String>
+
+	<!-- Dashboard -->
+	<system:String x:Key="MbBalance">Баланс:</system:String>
+	<system:String x:Key="MbCreditLimit">Кредитний ліміт:</system:String>
+	<system:String x:Key="MbCostsInThisMonth">Витрати в цьому місяці</system:String>
+	<system:String x:Key="MbAccountsDownload">Оновити баланс та виписку</system:String>
+
+	<!-- Exchanges -->
+	<system:String x:Key="MbAsOfDate">Станом на</system:String>
+	<system:String x:Key="MbCurrency">Валюта</system:String>
+	<system:String x:Key="MbRateTitle">Курс</system:String>
+	<system:String x:Key="MbCurrencyConverter">Конвертер валют</system:String>
+	<system:String x:Key="MbExchangeRatesNotFind">Жодних даних щодо курсів валют не виявлено!&#x0a;Завантажте дані для їх відображення</system:String>
+	<system:String x:Key="MbBuy:">Купівля:</system:String>
+	<system:String x:Key="MbSell:">Продаж:</system:String>
+	<system:String x:Key="MbCount">Кількість</system:String>
+	<system:String x:Key="MbResult">Результат</system:String>
+
+	<!-- Partnerships -->
+	<system:String x:Key="MbPartnership">Партнери (Покупка частинами)</system:String>
+	<system:String x:Key="MbNoInternetPartialError">За відсутністю доступу до інтернету&#x0a;деякі логотипи були встановлені за замовчуванням</system:String>
+
+	<!-- Settings -->
+	<system:String x:Key="MbAccountSettings">Обліковий запис</system:String>
+	<system:String x:Key="MbThemeSettings">Кольорова тема</system:String>
+	<system:String x:Key="MbCardsSettings">Налаштування карток</system:String>
+	<system:String x:Key="MbApiSettings">Налаштування API Monobank</system:String>
+	<system:String x:Key="MbLightTheme">Світла тема</system:String>
+	<system:String x:Key="MbDarkTheme">Темна тема</system:String>
+	<system:String x:Key="MbAdvanced">Розширені можливості</system:String>
+	<system:String x:Key="MbCurrentPaletteDescription">Це ваша поточна палітра кольорів додатку. Палітри можна змінювати за вашим бажанням, для повернення до початкового стану натисніть на кнопку "Відновити".</system:String>
+	<system:String x:Key="MbCardName">Найменування картки</system:String>
+	<system:String x:Key="MbCardDescription">Опис картки</system:String>
+	<system:String x:Key="MbDeleteAccount">Видалити обліковий запис</system:String>
+	<system:String x:Key="MbDeleteAccountTitle">Видалення облікового запису</system:String>
+	<system:String x:Key="MbDeleteAccountDescription">Ви дійсно бажаєте це зробити?&#x0a;Дана дія є незворотною!&#x0a;Разом з цим ви видалите всі дані про рахунки і платежі.</system:String>
+	<system:String x:Key="MbDeleteAccountDescriptionShort">Ви дійсно бажаєте це зробити?</system:String>
+	<system:String x:Key="MbDeleteAccountOk">Так, видалити</system:String>
+	<system:String x:Key="MbDeleteAccountCancel">Ні, залишити</system:String>
+	<system:String x:Key="MbCompatibilityMode">Режим сумісності</system:String>
+	<system:String x:Key="MbCompatibilityDescription">В деяких відеокартах можуть спостерігатися проблеми з візуалізацією деяких об'єктів, наприклад появою незрозумілих ліній в текстових полях. Ввімкнення режиму сумісності усуне ці неполадки, але можливо - ціною продуктивності</system:String>
+
+	<!-- Messages -->
+	<system:String x:Key="MbSaveDataSuccess">Дані успішно збережено!</system:String>
+	<system:String x:Key="MbSaveDataError">Виникла помилка при збереженні даних</system:String>
+	<system:String x:Key="MbDeleteDataError">Виникла помилка при видаленні даних</system:String>
+	<system:String x:Key="MbGetDataSuccess">Дані успішно завантажено!</system:String>
+	<system:String x:Key="MbStatementItemsDownloaded">Дані по цьому рахунку повністю завантажено,&#x0a;більше не треба завантажувати виписку за ці періоди</system:String>
+	<system:String x:Key="MbRequiredField">Обов'язкове поле</system:String>
+	<system:String x:Key="MbInvalidToken">Неприпустимий токен</system:String>
+	<system:String x:Key="MbSameToken">Навіщо змінювати старий токен на новий якщо вони ідентичні?</system:String>
+	<system:String x:Key="MbTokenChanged">Токен доступу змінено!</system:String>
+	<system:String x:Key="MbFieldMinSixChar">Повинно бути мінімум 6 символів</system:String>
+	<system:String x:Key="MbFieldOnlyNumber">Допускаються тільки числа!</system:String>
+	<system:String x:Key="MbInfoMessage">Інформування</system:String>
+	<system:String x:Key="MbUserExistMessage">Даний користувач вже існує в системі.</system:String>
+	<system:String x:Key="MbSelectedInfo">Вибрано</system:String>
+	<system:String x:Key="MbCauseInfo">Причина:</system:String>
+	<system:String x:Key="MbCommingSoonFeature">Функція зараз знаходиться в розробці&#x0a;Скоро з'явиться в майбутньому</system:String>
+	<system:String x:Key="MbNoInternet">Немає підключення до Інтернету!</system:String>
+	<system:String x:Key="MbCopy">Копіювати</system:String>
+	<system:String x:Key="MbMessageCopied">Скопійовано</system:String>
+	<system:String x:Key="MbMinAmount100">Мінімальна сума - 100 грн.</system:String>
+
+	<!-- Statement Account -->
+	<system:String x:Key="MbGetDataWaitStart">Вам потрібно зачекати</system:String>
+	<system:String x:Key="MbGetDataWaitEnd">секунд</system:String>
+	<system:String x:Key="MbGetDataWaitEndAlt">секунду</system:String>
+	<system:String x:Key="MbGetDataWaitEndAlt2">секунди</system:String>
+	<system:String x:Key="MbStatementItemsNotFind">Жодної транзакції не виявлено!&#x0a;Завантажте дані для їх відображення&#x0a;або зробіть транзакцію</system:String>
+	<system:String x:Key="MbDataAlreadyDownloaded">Всі дані за цей місяць завантажено, немає сенсу знову їх завантажувати</system:String>
+	<system:String x:Key="MbDataBeforeRegister">Ви пробуєте отримати дані за той час,&#x0a;коли ще навіть не були зареєстровані в Monobank</system:String>
+	<system:String x:Key="MbDataMonthNotExist">Дані за цей місяць відсутні!</system:String>
+	<system:String x:Key="MbPickMonth">Виберіть місяць</system:String>
+	<system:String x:Key="MbStatementAmount">Операція:</system:String>
+	<system:String x:Key="MbStatementOperationAmount">В іноземній валюті:</system:String>
+	<system:String x:Key="MbStatementRemainder">Залишок:</system:String>
+	<system:String x:Key="MbStatementCommission">Комісія:</system:String>
+	<system:String x:Key="MbStatementCashback">Кешбек:</system:String>
+	<system:String x:Key="MbStatementComment">Коментар:</system:String>
+	<system:String x:Key="MbStatementReceipt">Квитанція:</system:String>
+	<system:String x:Key="MbStatementEdrpou">Код ЄДРПОУ:</system:String>
+	<system:String x:Key="MbStatementEdrpouTooltip">Код єдиного державного реєстру підприємств та організацій України</system:String>
+	<system:String x:Key="MbStatementIban">IBAN:</system:String>
+	<system:String x:Key="MbStatementIbanTooltip">Міжнародний номер банківського рахунку</system:String>
+	<system:String x:Key="MbPreviousPart">Попередні 50 дат</system:String>
+	<system:String x:Key="MbNextPart">Наступні 50 дат</system:String>
+	<system:String x:Key="MbStatementReceiptCopied">Код квитанції скопійований</system:String>
+	<system:String x:Key="MbStatementReceiptInfo">При натисненні скопіюється код квитанції&#x0a;та відкриється сервіс для перевірки квитанції.&#x0a;Саме там їх можна завантажити!</system:String>
+
+	<!-- Partners -->
+	<system:String x:Key="MbPartnersNotFind">Жодних даних партнерів не виявлено!&#x0a;Завантажте дані для їх відображення</system:String>
+	<system:String x:Key="MbPartnersTooltip">Оновити список партнерів Monobank&#x0a;Потрібен доступ до інтернету</system:String>
+	<system:String x:Key="MbLinkPartnersWebsite">При натисненні ви перейдете на сайт партнера</system:String>
+	<system:String x:Key="MbPartnerFullOnline">Даний партнер при покупці частинами надає можливість оформити замовлення онлайн з доставкою</system:String>
+	<system:String x:Key="MbPartnerPartiallyOnline">Даний партнер при покупці частинами надає можливість оформити замовлення онлайн, але потрібно відвідувати магазин</system:String>
+	<system:String x:Key="MbPartnerOpenBrowser">Переходимо на сайт...</system:String>
+
+	<!-- Commands -->
+	<system:String x:Key="MbDownloadThisMonth">Завантажити дані за поточний місяць</system:String>
+	<system:String x:Key="MbDownloadThisDate">Завантажити дані за вказаний період</system:String>
+	<system:String x:Key="MbDownloadMore">Завантажити ще</system:String>
+	<system:String x:Key="MbDownload">Завантажити</system:String>
+	<system:String x:Key="MbDownloadAll">Завантажити все</system:String>
+	<system:String x:Key="MbClear">Очистити</system:String>
+	<system:String x:Key="MbRestore">Відновити</system:String>
+	<system:String x:Key="MbOn">Ввімкнути</system:String>
+	<system:String x:Key="MbOff">Вимкнути</system:String>
+</ResourceDictionary>
